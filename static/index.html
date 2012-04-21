@@ -1,12 +1,12 @@
 <html>
 <head>
 <title> map thang </title>
-<link rel="stylesheet" href="css/leaflet.css" />
+<link rel="stylesheet" href="leaflet-0.3.1/leaflet.css" / -->
 <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
 <![endif]-->
 
-<script src="js/leaflet.js"></script>
+<script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
 </head>
 <body>
 <div id="map" style="height: 500px; width: 75%"></div>
@@ -22,8 +22,18 @@ drawMap = function(){
     	maxZoom: 18
 	});
 
-	var london = new L.LatLng(51.505, -0.09); // geographical point (longitude and latitude)
-	map.setView(london, 13).addLayer(cloudmade);
+	//var london = new L.LatLng(51.505, -0.09); // geographical point (longitude an^d latitude)
+//	map.setView(london, 13).addLayer(cloudmade);
+// add the CloudMade layer to the map set the view to a given center and zoom
+map.addLayer(cloudmade).setView(new L.LatLng(51.505, -0.09), 13);
+
+// create a marker in the given location and add it to the map
+var marker = new L.Marker(new L.LatLng(51.5, -0.09));
+map.addLayer(marker);
+
+// attach a given HTML content to the marker and immediately open it
+marker.bindPopup("A pretty CSS3 popup.<br />Easily customizable.").openPopup();
+
 }
 
 // aparently this is how you are supposed to do onload
