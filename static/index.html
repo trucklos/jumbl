@@ -1,0 +1,35 @@
+<html>
+<head>
+<title> map thang </title>
+<link rel="stylesheet" href="css/leaflet.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
+<![endif]-->
+
+<script src="js/leaflet.js"></script>
+</head>
+<body>
+<div id="map" style="height: 500px; width: 75%"></div>
+<script>
+
+drawMap = function(){
+	// initialize the map on the "map" div
+	var map = new L.Map('map');
+	//7ed9bab0587c49f79a34e6c987ed60fb
+
+	var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
+   	 attribution: 'powered by geothang',
+    	maxZoom: 18
+	});
+
+	var london = new L.LatLng(51.505, -0.09); // geographical point (longitude and latitude)
+	map.setView(london, 13).addLayer(cloudmade);
+}
+
+// aparently this is how you are supposed to do onload
+window.addEventListener ? window.addEventListener("load",drawMap,false) : window.attachEvent && window.attachEvent("onload",drawMap);
+
+</script>
+</body>
+</html>
+
