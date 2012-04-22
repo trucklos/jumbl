@@ -18,13 +18,10 @@
                 // initialize the map on the "map" div
                 var map = new L.Map('map');
                 var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
-                    attribution: 'powered by geothang',
-                    maxZoom: 18
+                    attribution: '',
                 });
-                map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
 
-                var url = 'js/1.json';
-                //var url = 'http://localhost:8000/api/path/1';
+                var url = '../api/path/1.json';
                 $.getJSON(url, function (json) {
                     var latlngs = [];
                     $.each(json.points, function (key, val) {
