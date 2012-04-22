@@ -1,45 +1,50 @@
 <html>
-<head>
-<title> map thang </title>
-<link rel="stylesheet" href="leaflet-0.3.1/leaflet.css" / -->
-<!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" />
-<![endif]-->
+    
+    <head>
+        <title>map thang</title>
+        <link rel="stylesheet" href="leaflet-0.3.1/leaflet.css">
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css"
+            />
+        <![endif]-->
+	<script src="leaflet-0.3.1/leaflet.js"></script>
+	<script src="js/jquery-1.7.2.js"></script>
+    </head>
+    
+    <body>
+        <div id="map" style="height: 500px; width: 75%"></div>
+        <script>
+            drawMap = function () {
+                // initialize the map on the "map" div
+                var map = new L.Map('map');
+                var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
+                    attribution: 'powered by geothang',
+                    maxZoom: 18
+                });
+                map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
 
-<script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
-</head>
-<body>
-<div id="map" style="height: 500px; width: 75%"></div>
-<script>
+                var url = 'js/1.json';
+                //var url = 'http://localhost:8000/api/path/1';
+                $.getJSON(url, function (json) {
+                    var latlngs = [];
+                    $.each(json.points, function (key, val) {
+                        var point = new L.LatLng(val.lat, val.lon);
+                        latlngs.push(point);
 
-drawMap = function(){
-	// initialize the map on the "map" div
-	var map = new L.Map('map');
-	//7ed9bab0587c49f79a34e6c987ed60fb
+                        var marker = new L.Marker(point);
+                        map.addLayer(marker);
+                        marker.bindPopup('Point: ' + val.id + ' at Time: ' + val.time);
+                    });
+                    var polyline = new L.Polyline(latlngs, {
+                        color: 'red'
+                    });
+                    map.addLayer(polyline);
+                    map.fitBounds(new L.LatLngBounds(latlngs));
+                });
+            }
 
-	var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
-   	 attribution: 'powered by geothang',
-    	maxZoom: 18
-	});
-
-	//var london = new L.LatLng(51.505, -0.09); // geographical point (longitude an^d latitude)
-//	map.setView(london, 13).addLayer(cloudmade);
-// add the CloudMade layer to the map set the view to a given center and zoom
-map.addLayer(cloudmade).setView(new L.LatLng(51.505, -0.09), 13);
-
-// create a marker in the given location and add it to the map
-var marker = new L.Marker(new L.LatLng(51.5, -0.09));
-map.addLayer(marker);
-
-// attach a given HTML content to the marker and immediately open it
-marker.bindPopup("A pretty CSS3 popup.<br />Easily customizable.").openPopup();
-
-}
-
-// aparently this is how you are supposed to do onload
-window.addEventListener ? window.addEventListener("load",drawMap,false) : window.attachEvent && window.attachEvent("onload",drawMap);
-
-</script>
-</body>
+            // aparently this is how you are supposed to do onload
+            window.addEventListener ? window.addEventListener("load", drawMap, false) : window.attachEvent && window.attachEvent("onload", drawMap);
+        </script>
+    </body>
 </html>
-
