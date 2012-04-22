@@ -1,0 +1,3 @@
+#!/bin/bash
+currentPath=`echo $0 | sed 's|/[^/]*$||g'`
+${currentPath}/../application/manage.py runserver mapthing.carlos.ag:8080
