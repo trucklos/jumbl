@@ -1,13 +1,24 @@
 from piston.handler import BaseHandler
 from geo.models import User, Path, Point
 
+class UserHandler(BaseHandler):
+  model = User
+  fields = ( 'id','username' )
+
 class PathHandler(BaseHandler):
-  allowed_methods = ('GET',)
+  model = Path
+  fields = ( 'id','description','user' )
+
+class PointHandler(BaseHandler):
   model = Point
-  # fields = ( ('user',('username')) )
-  fields = ( 'id','lat','lon','time' )
+  fields = ( 'id','lat','lon','time','path' )
+
+class UserPathHandler(BaseHandler):
+  def read(self, request, userId):
+    if userId != None:
+      return Path.objects.filter(user__pk__exact=userId)
+
+class PathPointHandler(BaseHandler):
   def read(self, request, pathId):
-    #base = Point.objects
     if pathId != None:
-      return { 'path':Path.objects.values('id','description','user__username').get(pk__exact=pathId)
-               , 'points':Point.objects.filter(path__pk__exact=pathId)}
+      return Point.objects.filter(path__pk__exact=pathId)
