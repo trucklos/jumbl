@@ -47,7 +47,7 @@ function loadUserPathList() {
     
     var userId = getQueryVariable("userid");
     
-    var url = '..api/user/' + userId + '/paths/';
+    var url = '../api/user/' + userId + '/paths/';
 
     $.getJSON(url, function (json) {
         var latlngs = [];
