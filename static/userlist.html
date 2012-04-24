@@ -22,15 +22,21 @@
 	    <script>
 	    
 	    $(document).ready(function() {
-			loadUserPathList();
-		});
+         map = new L.Map('map');
+         var userid = getQueryVariable("userid");
+         var url = '../api/users/'+userid
+         $.getJSON(url, function(user){
+           drawPath(user.paths[0]);
+			     loadUserPathList(user.paths);
+         });
+		  });
 	    
 	    </script>
     
     </head>
     
     <body>
-        
+    <div id="map" style="height: 400px; width: 100%;"></div>      
 		<div class="container">
         
 			<div class="span-24">
