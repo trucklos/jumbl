@@ -55,7 +55,7 @@ function loadUserPathList() {
             var description = val.description;
             var pathid = val.id;
             
-            $('ul#userlist').append('<li><a href="..static/index.html?pathid=' + pathid + '">' + description + '</a></li>');
+            $('ul#userlist').append('<li><a href="../static/index.html?pathid=' + pathid + '">' + description + '</a></li>');
         });
     });
 }
