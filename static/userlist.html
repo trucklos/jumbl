@@ -17,12 +17,12 @@
 		
 		<script src="leaflet-0.3.1/leaflet.js"></script>
 		<script src="js/jquery-1.7.2.js"></script>
-		<script src="js/mapthing.js"></script>
+	    <script src="js/mapthing.js"></script>
 	    
 	    <script>
 	    
 	    $(document).ready(function() {
-			drawMap();
+			loadUserPathList();
 		});
 	    
 	    </script>
@@ -33,9 +33,15 @@
         
 		<div class="container">
         
-			<div id="map" class="span-24" style="height: 500px; width: 950px"></div>
+			<div class="span-24">
+			
+				<ul id="userlist">
+				
+				</ul>
+			
+			</div>
         
         </div>
-        
-	</body>
+       
+    </body>
 </html>
