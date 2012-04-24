@@ -22,7 +22,10 @@
 	    <script>
 	    
 	    $(document).ready(function() {
-			drawMap();
+        map = new L.Map('map');
+		  	var pathid = getQueryVariable("pathid");
+        getAndDrawPath(pathid);
+
 		});
 	    
 	    </script>
