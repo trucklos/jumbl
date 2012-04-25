@@ -23,6 +23,8 @@
 	    
 	    $(document).ready(function() {
          map = new L.Map('map');
+         allPathsLayer = new L.LayerGroup();
+         map.addLayer(allPathsLayer);
          var userid = getQueryVariable("userid");
          var url = '../api/users/'+userid
          $.getJSON(url, function(user){
