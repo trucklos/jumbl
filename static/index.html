@@ -2,44 +2,64 @@
     
     <head>
         <title>map thang</title>
-   		
-   		<!-- Blueprint css -->
+       
+       <!-- Blueprint css -->
         <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection"> 
-		<link rel="stylesheet" href="css/print.css" type="text/css" media="print"> 
-		<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]--> 
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print"> 
+    <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]--> 
         
         <!-- Leaflet css -->
         <link rel="stylesheet" href="leaflet-0.3.1/leaflet.css">
         <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
-		
-		<!-- Custom css -->
-		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"> 
-		
-		<script src="leaflet-0.3.1/leaflet.js"></script>
-		<script src="js/jquery-1.7.2.js"></script>
-		<script src="js/mapthing.js"></script>
-	    
-	    <script>
-	    
-	    $(document).ready(function() {
-        map = new L.Map('map');
-        allPathsLayer = new L.LayerGroup();
-        map.addLayer(allPathsLayer);
-		  	var pathid = getQueryVariable("pathid");
-        getAndDrawPath(pathid);
-		  });
-	    
-	    </script>
     
-    </head>
+    <!-- Custom css -->
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"> 
     
-    <body>
+    <script src="leaflet-0.3.1/leaflet.js"></script>
+    <script src="js/jquery-1.7.2.js"></script>
+    <script src="js/mapthing.js"></script>
+      
+    <script>
+      currentPath = null;
+      currentUser = 1;
+
+      function submitPathForm(){
+        createPath($("#description").val());
+      }
+
+      $(document).ready(function() {
+        initMap();
+
+        userid = getQueryVariable("userid");
+        var url = '../api/users/'+userid
+
+        $.getJSON(url, function(user){
+           loadUserPathList(user.paths);
+        });
+
+        map.on('dblclick',function(e){
+          if(currentPath == null)
+            alert('no path set');
+          addPoint(e.latlng.lat, e.latlng.lng);
+        });
+
+      });
+    </script>
+    
+  </head>
+    
+  <body>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <div id="directions" style="padding:15px"><b>Directions: Enter an adventure name below and click 'create'.  Double click the map to add points to your adventure.</b>
+    <div class="container">
+      <div class="span-24">
+        <form name="pathform" action="" method="GET" >
+          <input type="text" name="description" id="description" />
+          <input type="button" name="button" Value="create" onClick="submitPathForm()" />
+        </form>
+        <ul id="userlist"> </ul>
+      </div>
         
-		<div class="container">
-        
-			<div id="map" class="span-24" style="height: 500px; width: 950px"></div>
-        
-        </div>
-        
-	</body>
+    </div>
+  </body>
 </html>

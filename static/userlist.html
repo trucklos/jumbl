@@ -22,9 +22,10 @@
       <script>
       
       $(document).ready(function() {
-         map = new L.Map('map');
+/*         map = new L.Map('map');
          allPathsLayer = new L.LayerGroup();
-         map.addLayer(allPathsLayer);
+         map.addLayer(allPathsLayer); */
+         initMap();
          var userid = getQueryVariable("userid");
          var url = '../api/users/'+userid
          $.getJSON(url, function(user){
