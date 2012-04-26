@@ -1,3 +1,10 @@
+function initMap(){
+map = new L.Map('map', {'doubleClickZoom':false});
+        var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
+          attribution: '',
+        });
+        map.addLayer(cloudmade).setView(new L.LatLng(42.3875, -71.1), 13);
+}
 
 function getQueryVariable(variable) { 
   
@@ -14,9 +21,7 @@ function getQueryVariable(variable) {
 } 
 
 function drawPath(path) {
-  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
-    attribution: '',
-  });
+
   allPathsLayer.clearLayers();
   var latlngs = [];
   $.each(path.points, function (key, val) {
@@ -29,6 +34,9 @@ function drawPath(path) {
   var polyline = new L.Polyline(latlngs ); // ,{color: 'blue'}
   allPathsLayer.addLayer(polyline);
   map.fitBounds(new L.LatLngBounds(latlngs));
+  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
+    attribution: '',
+  }); 
   map.addLayer(cloudmade); 
 }
 
@@ -64,8 +72,8 @@ function loadUserPathList(pathList) {
 
 function createPath(description){
 
-  $.post("../api/paths/",{'description': description,'user_id': currentUser}, function(data){ 
-    currentPath = data;
+  $.post("../api/paths/",{'description': description,'user_id': currentUser}, function(path){ 
+    currentPath = path;
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
 
 }
@@ -75,10 +83,12 @@ function addPoint(lat, lng){
   var timeFormat = ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat};
   
-  $.post("../api/points/", postVars, function(data){
-    var point = new L.LatLng(lat, lng);
+  $.post("../api/points/", postVars, function(point){
+/*    var point = new L.LatLng(lat, lng);
     var marker = new L.Marker(point);
-    map.addLayer(marker);
+    map.addLayer(marker); */
+    currentPath.points.push(point);
+    drawPath(currentPath);
   }).error(function() { alert("could not add point"); } );
 }
 
