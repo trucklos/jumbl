@@ -22,10 +22,15 @@
 	    <script>
 	    
 	    $(document).ready(function() {
+
+  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
+    attribution: '',
+  });
+
         map = new L.Map('map');
 		  	var pathid = getQueryVariable("pathid");
         getAndDrawPath(pathid);
-
+  map.addLayer(cloudmade);
 		});
 	    
 	    </script>

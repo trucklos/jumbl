@@ -17,39 +17,44 @@
     
     <script src="leaflet-0.3.1/leaflet.js"></script>
     <script src="js/jquery-1.7.2.js"></script>
-      <script src="js/mapthing.js"></script>
+    <script src="js/mapthing.js"></script>
       
-      <script>
-      
+    <script>
+      currentPath = null;
+      currentUser = 1;
+
+      function submitPathForm(){
+        createPath($("#description").val());
+      }
+
       $(document).ready(function() {
-         map = new L.Map('map');
-         allPathsLayer = new L.LayerGroup();
-         map.addLayer(allPathsLayer);
-         var userid = getQueryVariable("userid");
-         var url = '../api/users/'+userid
-         $.getJSON(url, function(user){
-           drawPath(user.paths[0]);
-           loadUserPathList(user.paths);
-         });
+
+        map = new L.Map('map', {'doubleClickZoom':false});
+        var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png', {
+          attribution: '',
+        });
+        map.addLayer(cloudmade).setView(new L.LatLng(42.3875, -71.1), 13);
+        map.on('dblclick',function(e){
+          if(currentPath == null)
+            alert('no path set');
+          addPoint(e.latlng.lat, e.latlng.lng);
+        });
       });
-      
-      </script>
+    </script>
     
-    </head>
+  </head>
     
-    <body>
+  <body>
     <div id="map" style="height: 400px; width: 100%;"></div>      
     <div class="container">
         
       <div class="span-24">
-      
-        <ul id="userlist">
-        
-        </ul>
-      
+        <form name="pathform" action="" method="GET" >
+          <input type="text" name="description" id="description" />
+          <input type="button" name="button" Value="create" onClick="submitPathForm()" />
+        </form>
       </div>
         
-        </div>
-       
-    </body>
+    </div>
+  </body>
 </html>

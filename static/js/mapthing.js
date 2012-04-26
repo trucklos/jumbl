@@ -1,16 +1,16 @@
 
 function getQueryVariable(variable) { 
-	
-	var query = window.location.search.substring(1); 
-	var vars = query.split("&"); 
+  
+  var query = window.location.search.substring(1); 
+  var vars = query.split("&"); 
 
-	for (var i=0; i<vars.length; i++) { 
-		var pair = vars[i].split("="); 
-		if (pair[0] == variable) { 
-				return pair[1]; 
-		} 
-	}	 
-	alert('Query Variable ' + variable + ' not found'); 
+  for (var i=0; i<vars.length; i++) { 
+    var pair = vars[i].split("="); 
+    if (pair[0] == variable) { 
+        return pair[1]; 
+    } 
+  }   
+  alert('Query Variable ' + variable + ' not found'); 
 } 
 
 function drawPath(path) {
@@ -39,6 +39,17 @@ function getAndDrawPath(pathId){
   });
 }
 
+function ISODateString(d) {
+    function pad(n){
+        return n<10 ? '0'+n : n
+    }
+    return d.getUTCFullYear()+'-'
+    + pad(d.getUTCMonth()+1)+'-'
+    + pad(d.getUTCDate())+'T'
+    + pad(d.getUTCHours())+':'
+    + pad(d.getUTCMinutes())+':'
+    + pad(d.getUTCSeconds())+'Z'
+}
 
 function loadUserPathList(pathList) {
         pathItems = [];
@@ -47,9 +58,27 @@ function loadUserPathList(pathList) {
             var pathid = val.id;
             pathItems.push('<li><a href="javascript:void(0)" onclick="getAndDrawPath(\''+val.id+'\')">'
 +val.description+'</a></li>');
-            //$('ul#userlist').append('<li><a href="javascript:getAndDrawPath("'+val.id+'")>' + description + '</a></li>');
         });
         $('ul#userlist').append( pathItems.join('\n') );
 }
 
+function createPath(description){
+
+  $.post("../api/paths/",{'description': description,'user_id': currentUser}, function(data){ 
+    currentPath = data;
+  }).error(function() { alert("could not add path: probably a duplicate description"); } );
+
+}
+
+function addPoint(lat, lng){
+  var currentTime = new Date();
+  var timeFormat = ISODateString(currentTime);
+  var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat};
+  
+  $.post("../api/points/", postVars, function(data){
+    var point = new L.LatLng(lat, lng);
+    var marker = new L.Marker(point);
+    map.addLayer(marker);
+  }).error(function() { alert("could not add point"); } );
+}
 
