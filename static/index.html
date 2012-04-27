@@ -20,10 +20,9 @@
 
 	<script>
 		currentPath = null;
-		currentUser = 1;
 
 		function submitPathForm(){
-			createPath($("#description").val());
+			createPath($("#description").val(), getQueryVariable("userid"));
 		}
 
 		$(document).ready(function() {
