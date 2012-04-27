@@ -22,27 +22,20 @@
 		currentPath = null;
 
 		function submitPathForm(){
-			createPath($("#description").val(), getQueryVariable("userid"));
+			MapThing.createPath($("#description").val(), MapThing.getQueryVariable("userid"));
 		}
 
 		$(document).ready(function() {
-			initMap();
+			MapThing.initMap('map');
 
-			userid = getQueryVariable("userid");
+			userid = MapThing.getQueryVariable("userid");
 			var url = '../api/users/'+userid;
 
 			$.getJSON(url, function(user){
-				loadUserPathList(user.paths);
+				MapThing.loadUserPathList(user.paths);
 			});
 
-			map.on('dblclick',function(e){
-
-				if(currentPath == null) {
-					alert('no path set');
-				} else {
-					addPoint(e.latlng.lat, e.latlng.lng);
-				}
-			});
+			
 		});
 	</script>
 </head>

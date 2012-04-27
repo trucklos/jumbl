@@ -1,16 +1,38 @@
-function initMap(){
+// create a module and passh jquery as $
+var MapThing = (function ($) {
+
+var map;
+var allPathsLayer;
+var currentPath;
+var currentPathList = []
+
+// module variable
+var mt = {}
+
+// public function my.initMap
+mt.initMap = function(elementId){
   currentPath = null;
   currentPathList = [];
 
-  map = new L.Map('map', {'doubleClickZoom':false});
+  map = new L.Map(elementId, {'doubleClickZoom':false});
   allPathsLayer = new L.LayerGroup();
   map.addLayer(allPathsLayer);
-  
+
+  map.on('dblclick',function(e){
+
+        if(currentPath == null) {
+          alert('no path set');
+        } else {
+          addPoint(e.latlng.lat, e.latlng.lng);
+        }
+      });
+
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
   map.addLayer(cloudmade).setView(new L.LatLng(42.3875, -71.1), 13);
 }
 
-function getQueryVariable(variable) { 
+// my.initMap public function 
+mt.getQueryVariable = function(variable) { 
   
   var query = window.location.search.substring(1); 
   var vars = query.split("&"); 
@@ -23,6 +45,10 @@ function getQueryVariable(variable) {
   }   
   alert('Query Variable ' + variable + ' not found'); 
 } 
+
+function editPath(path){
+  currentPath = path;
+}
 
 function drawPath(path, zoom) {
   var zoom = typeof(zoom) === 'undefined' ? true : zoom; 
@@ -43,10 +69,11 @@ function drawPath(path, zoom) {
     map.fitBounds(new L.LatLngBounds(latlngs));
 }
 
-function getAndDrawPath(pathId){
+mt.getAndDrawPath = function(pathId){
   var url = '../api/paths/'+pathId;
   $.getJSON(url, function(path){
     drawPath(path);
+    editPath(path);
   });
 }
 
@@ -62,18 +89,18 @@ function ISODateString(d) {
     + pad(d.getUTCSeconds())+'Z'
 }
 
-function loadUserPathList(pathList) {
+mt.loadUserPathList = function(pathList) {
         pathItems = [];
         $.each(pathList, function (key, val) {
             var description = val.description;
             var pathid = val.id;
-            pathItems.push('<li><a href="javascript:void(0)" onclick="getAndDrawPath(\''+val.id+'\')">' + val.description + '</a></li>');
+            pathItems.push('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+val.id+'\')">' + val.description + '</a></li>');
         });
         $('ul#userlist').empty();
         $('ul#userlist').append( pathItems.join('\n') );
 }
 
-function createPath(description, createForUser){
+createPath = function(description, createForUser){
 
   $.post("../api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
     currentPath = path;
@@ -84,7 +111,7 @@ function createPath(description, createForUser){
 
 }
 
-function addPoint(lat, lng){
+addPoint = function(lat, lng){
   var currentTime = new Date();
   var timeFormat = ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat};
@@ -95,3 +122,6 @@ function addPoint(lat, lng){
   }).error(function() { alert("could not add point"); } );
 }
 
+return mt;
+
+}($));
