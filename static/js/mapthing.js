@@ -73,10 +73,10 @@ function loadUserPathList(pathList) {
         $('ul#userlist').append( pathItems.join('\n') );
 }
 
-function createPath(description){
+function createPath(description, createForUser){
 
-	alert("currentUser = " + currentUser);
-	$.post("../api/paths/",{'description': description,'user_id': currentUser}, function(path){ 
+	alert("createForUser = " + createForUser);
+	$.post("../api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
 		currentPath = path;
     // For now let's just tack it on to the end of the path list
     // TODO: actually maintain a list of paths so we can access them later
