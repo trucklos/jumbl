@@ -32,7 +32,7 @@ mt.initMap = function(elementId){
 }
 
 // my.initMap public function 
-mt.getQueryVariable = function(variable) { 
+mt.getQueryVariable = function(variable, defaultval) { 
   
   var query = window.location.search.substring(1); 
   var vars = query.split("&"); 
@@ -43,7 +43,7 @@ mt.getQueryVariable = function(variable) {
         return pair[1]; 
     } 
   }   
-  alert('Query Variable ' + variable + ' not found'); 
+  return defaultval;
 } 
 
 function editPath(path){
@@ -55,22 +55,24 @@ function drawPath(path, zoom) {
 
   allPathsLayer.clearLayers();
   var latlngs = [];
-  $.each(path.points, function (key, val) {
-    var point = new L.LatLng(val.lat, val.lon);
-    latlngs.push(point);
+  if (path.points.length > 0) {
+    $.each(path.points, function (key, val) {
+      var point = new L.LatLng(val.lat, val.lon);
+      latlngs.push(point);
 
-    var marker = new L.Marker(point);
-    allPathsLayer.addLayer(marker);
-    marker.bindPopup('Point: ' + val.id + ' at Time: ' + val.time);
-  });
-  var polyline = new L.Polyline(latlngs ); // ,{color: 'blue'}
-  allPathsLayer.addLayer(polyline);
-  if(zoom)
-    map.fitBounds(new L.LatLngBounds(latlngs));
+      var marker = new L.Marker(point);
+      allPathsLayer.addLayer(marker);
+      marker.bindPopup('Point: ' + val.id + ' at Time: ' + val.time);
+    });
+    var polyline = new L.Polyline(latlngs ); // ,{color: 'blue'}
+    allPathsLayer.addLayer(polyline);
+    if(zoom)
+      map.fitBounds(new L.LatLngBounds(latlngs));
+  }
 }
 
 mt.getAndDrawPath = function(pathId){
-  var url = '../api/paths/'+pathId;
+  var url = 'api/paths/'+pathId;
   $.getJSON(url, function(path){
     drawPath(path);
     editPath(path);
@@ -100,13 +102,14 @@ mt.loadUserPathList = function(pathList) {
         $('ul#userlist').append( pathItems.join('\n') );
 }
 
-createPath = function(description, createForUser){
+mt.createPath = function(description, createForUser){
 
-  $.post("../api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
+  $.post("api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
     currentPath = path;
+    drawPath(currentPath, false);
     // For now let's just tack it on to the end of the path list
     // TODO: actually maintain a list of paths so we can access them later
-    $('ul#userlist').append('<li><a href="javascript:void(0)" onclick="getAndDrawPath(\''+path.id+'\')">' + path.description + '</a></li>');
+    $('ul#userlist').append('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+path.id+'\')">' + path.description + '</a></li>');
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
 
 }
@@ -116,7 +119,7 @@ addPoint = function(lat, lng){
   var timeFormat = ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat};
   
-  $.post("../api/points/", postVars, function(point){
+  $.post("api/points/", postVars, function(point){
     currentPath.points.push(point);
     drawPath(currentPath, false);
   }).error(function() { alert("could not add point"); } );

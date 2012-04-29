@@ -21,15 +21,16 @@
 	<script>
 		currentPath = null;
 
+		userid = null;
 		function submitPathForm(){
-			MapThing.createPath($("#description").val(), MapThing.getQueryVariable("userid"));
+			MapThing.createPath($("#createpathdesc").val(), userid);
 		}
 
 		$(document).ready(function() {
 			MapThing.initMap('map');
 
-			userid = MapThing.getQueryVariable("userid");
-			var url = '../api/users/'+userid;
+			userid = MapThing.getQueryVariable("userid",1);
+			var url = 'api/users/'+userid;
 
 			$.getJSON(url, function(user){
 				MapThing.loadUserPathList(user.paths);
@@ -54,8 +55,8 @@
 			<strong>Enter an adventure name below and click 'create'.  Double click the map to add points to your adventure.</strong>
 		</div>
 		<form name="pathform">
-			<input type="text" name="description" id="description" />
-			<input type="button" name="button" Value="create" onClick="submitPathForm()" />
+			<input type="text" name="createpathdesc" id="createpathdesc" />
+			<input type="button" name="createpathbutton" id="createpathbutton" value="create" onClick="submitPathForm()" />
 		</form>
 		<ul id="userlist"> </ul>
 	</div>
