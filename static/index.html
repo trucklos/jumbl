@@ -30,7 +30,7 @@
 			MapThing.initMap('map');
 
 			userid = MapThing.getQueryVariable("userid",1);
-			var url = 'api/users/'+userid;
+			var url = 'django/api/users/'+userid;
 
 			$.getJSON(url, function(user){
 				MapThing.loadUserPathList(user.paths);

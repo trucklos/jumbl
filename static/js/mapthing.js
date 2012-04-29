@@ -72,7 +72,7 @@ function drawPath(path, zoom) {
 }
 
 mt.getAndDrawPath = function(pathId){
-  var url = 'api/paths/'+pathId;
+  var url = 'django/api/paths/'+pathId;
   $.getJSON(url, function(path){
     drawPath(path);
     editPath(path);
@@ -104,7 +104,7 @@ mt.loadUserPathList = function(pathList) {
 
 mt.createPath = function(description, createForUser){
 
-  $.post("api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
+  $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
     currentPath = path;
     drawPath(currentPath, false);
     // For now let's just tack it on to the end of the path list
@@ -119,7 +119,7 @@ addPoint = function(lat, lng){
   var timeFormat = ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat};
   
-  $.post("api/points/", postVars, function(point){
+  $.post("django/api/points/", postVars, function(point){
     currentPath.points.push(point);
     drawPath(currentPath, false);
   }).error(function() { alert("could not add point"); } );
