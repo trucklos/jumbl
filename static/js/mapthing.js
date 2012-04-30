@@ -4,10 +4,12 @@ var MapThing = (function ($) {
 var map;
 var allPathsLayer;
 var currentPath;
-var currentPathList = []
+var currentPathList = [];
+var userLat = null;
+var userLong = null;
 
 // module variable
-var mt = {}
+var mt = {};
 
 // public function my.initMap
 mt.initMap = function(elementId){
@@ -28,7 +30,11 @@ mt.initMap = function(elementId){
       });
 
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
-  map.addLayer(cloudmade).setView(new L.LatLng(42.3875, -71.1), 13);
+  	
+  var initLat = 42.3875, initLong = -71.1;
+  map.addLayer(cloudmade).setView(new L.LatLng(initLat, initLong), 13);
+ 
+  map.locate({setView: true, maxZoom: 13});
 }
 
 // my.initMap public function 
