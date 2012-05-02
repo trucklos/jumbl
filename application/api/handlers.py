@@ -7,11 +7,11 @@ class UserHandler(BaseHandler):
 
 class PathHandler(BaseHandler):
   model = Path
-  fields = ( 'id','description', ('points',('time','lat','lon'), ), )
+  fields = ( 'id','description', ('points',('id','time','lat','lon','description'), ), )
 
 class PointHandler(BaseHandler):
   model = Point
-  fields = ( 'id','lat','lon','time',)
+  fields = ( 'id','lat','lon','time','description',)
 
 class UserPathHandler(BaseHandler):
   def read(self, request, userId):

@@ -68,7 +68,7 @@ function drawPath(path, zoom) {
 
       var marker = new L.Marker(point);
       allPathsLayer.addLayer(marker);
-      marker.bindPopup('Point: ' + val.id + ' at Time: ' + val.time);
+      marker.bindPopup('{' + val.id + '} ' + val.description + '.  --' + val.time);
     });
     var polyline = new L.Polyline(latlngs ); // ,{color: 'blue'}
     allPathsLayer.addLayer(polyline);
@@ -121,9 +121,10 @@ mt.createPath = function(description, createForUser){
 }
 
 addPoint = function(lat, lng){
+  var description = prompt("Please enter a description for this point.");
   var currentTime = new Date();
   var timeFormat = ISODateString(currentTime);
-  var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat};
+  var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat, 'description': description};
   
   $.post("django/api/points/", postVars, function(point){
     currentPath.points.push(point);

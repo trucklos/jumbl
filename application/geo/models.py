@@ -17,6 +17,7 @@ class Point(models.Model):
    time = models.DateTimeField()
    lat = models.FloatField()
    lon = models.FloatField()
+   description = models.CharField("Point description", max_length=512)
    def __unicode__(self):
        return u'%s - %s' % (str(self.time), str(self.path.description))
 
