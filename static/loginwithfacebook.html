@@ -13,6 +13,10 @@
             xfbml      : true,
             oauth      : true,
           });
+          
+          FB.api('/me', function(response) {
+            alert('Your name is ' + response.name);
+          });
         };
         (function(d){
            var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
@@ -24,3 +28,5 @@
       <div class="fb-login-button" scope="email,user_status">Login with Facebook</div>
     </body>
  </html>
+ 
+ 
