@@ -1,4 +1,4 @@
-# Django settings for geothang project.
+# Django settings for mapthing project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,8 +12,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'geothang',                      # Or path to database file if using sqlite3.
-        'USER': 'geothang',                      # Not used with sqlite3.
+        'NAME': 'mapthing',                      # Or path to database file if using sqlite3.
+        'USER': 'mapthing',                      # Not used with sqlite3.
         'PASSWORD': 'safe4stokes*',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
@@ -100,10 +100,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'geothang.urls'
+ROOT_URLCONF = 'mapthing.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'geothang.wsgi.application'
+WSGI_APPLICATION = 'mapthing.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -120,7 +120,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-#geothang apps:
+#mapthing apps:
     'geo',
 )
 
