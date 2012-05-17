@@ -10,6 +10,7 @@ class PathHandler(BaseHandler):
   fields = ( 'id','description', ('points',('id','time','lat','lon','description'), ), )
 
 class PointHandler(BaseHandler):
+  allowed_methods = ('GET', 'POST', 'PUT', 'DELETE')
   model = Point
   fields = ( 'id','lat','lon','time','description',)
 

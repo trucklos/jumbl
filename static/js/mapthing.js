@@ -1,4 +1,4 @@
-// create a module and passh jquery as $
+// create a module and pass in jquery as $
 var MapThing = (function ($) {
 
 var map;
@@ -66,9 +66,19 @@ function drawPath(path, zoom) {
       var point = new L.LatLng(val.lat, val.lon);
       latlngs.push(point);
 
-      var marker = new L.Marker(point);
+      var marker = new L.Marker(point, {'draggable':true} );
       allPathsLayer.addLayer(marker);
       marker.bindPopup('{' + val.id + '} ' + val.description + '.  --' + val.time);
+      marker.point = val;
+      marker.path = path
+      marker.on('dragend', function(e){
+        this.point.lat = this._latlng.lat;
+        this.point.lon = this._latlng.lng;
+        drawPath(this.path)
+        $.ajax({type: 'PUT', url: 'django/api/points/'+this.point.id,
+                data: { 'lat': this._latlng.lat , 'lon': this._latlng.lng }
+        })
+      });
     });
     var polyline = new L.Polyline(latlngs ); // ,{color: 'blue'}
     allPathsLayer.addLayer(polyline);
@@ -114,7 +124,7 @@ mt.createPath = function(description, createForUser){
     currentPath = path;
     drawPath(currentPath, false);
     // For now let's just tack it on to the end of the path list
-    // TODO: actually maintain a list of paths so we can access them later
+    // TODO: maintain a list of paths so we can access them later
     $('ul#userlist').append('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+path.id+'\')">' + path.description + '</a></li>');
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
 
