@@ -1,10 +1,17 @@
 // create a module and pass in jquery as $
 var MapThing = (function ($) {
 
+// Visual Globals
 var map;
 var allPathsLayer;
+
+// 
 var currentPath;
 var currentPathList = [];
+
+var markers = []
+
+// Current Position
 var userLat = null;
 var userLong = null;
 
@@ -21,10 +28,7 @@ mt.initMap = function(elementId){
   map.addLayer(allPathsLayer);
 
   map.on('dblclick',function(e){
-
-        if(currentPath == null) {
-          alert('no path set');
-        } else {
+        if(currentPath != null){ 
           addPoint(e.latlng.lat, e.latlng.lng);
         }
       });
@@ -56,22 +60,52 @@ function editPath(path){
   currentPath = path;
 }
 
+mt.editPointPopup = function(markerKey){
+  var marker = markers[markerKey];
+// MapThing.updateDescription(\"markerKey\",
+  marker._popup.setContent("<form id='editForm' onsubmit='MapThing.updateDescription("+markerKey+",$(\"#desc\").val());' action='javascript:void(0)'>"+
+    "<input type='text' id='desc' value='"+ (marker.point.description == null ? "" : marker.point.description)+"' />"+
+    "</form>"+
+    "<br/> <a href=''> delete </a>");
+    $('#desc').focus();
+}
+
+mt.showPointPopup = function(markerKey){
+  var marker = markers[markerKey];
+  marker._popup.setContent( (marker.point.description == null ? "" : marker.point.description) + "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>");
+}
+
+mt.updateDescription = function(pointKey, description){
+  var point = currentPath.points[pointKey];
+  console.log(point);
+  point.description = description;
+  $.ajax({type: 'PUT', url: 'django/api/points/'+point.id,
+                data: { 'description': description }
+        });
+  mt.showPointPopup(pointKey);
+}
+
 function drawPath(path, zoom) {
   var zoom = typeof(zoom) === 'undefined' ? true : zoom; 
 
   allPathsLayer.clearLayers();
+  markers = []
+
   var latlngs = [];
   if (path.points.length > 0) {
     $.each(path.points, function (key, val) {
       var point = new L.LatLng(val.lat, val.lon);
       latlngs.push(point);
 
-      var marker = new L.Marker(point, {'draggable':true} );
-      allPathsLayer.addLayer(marker);
-      marker.bindPopup('{' + val.id + '} ' + val.description + '.  --' + val.time);
-      marker.point = val;
-      marker.path = path
-      marker.on('dragend', function(e){
+      markers[key] = new L.Marker(point, {'draggable':true} );
+      allPathsLayer.addLayer(markers[key]);
+
+      markers[key].bindPopup('');
+      markers[key].point = val;
+      markers[key].path = path
+      mt.showPointPopup(key);
+
+      markers[key].on('dragend', function(e){
         this.point.lat = this._latlng.lat;
         this.point.lon = this._latlng.lng;
         drawPath(this.path)
@@ -80,7 +114,8 @@ function drawPath(path, zoom) {
         })
       });
     });
-    var polyline = new L.Polyline(latlngs ); // ,{color: 'blue'}
+
+    var polyline = new L.Polyline(latlngs ); 
     allPathsLayer.addLayer(polyline);
     if(zoom)
       map.fitBounds(new L.LatLngBounds(latlngs));
@@ -131,17 +166,20 @@ mt.createPath = function(description, createForUser){
 }
 
 addPoint = function(lat, lng){
-  var description = prompt("Please enter a description for this point.");
+  var description = ""; //prompt("Please enter a description for this point.");
   var currentTime = new Date();
   var timeFormat = ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat, 'description': description};
   
   $.post("django/api/points/", postVars, function(point){
+    var newPointKey = currentPath.points.length;
     currentPath.points.push(point);
     drawPath(currentPath, false);
+    console.log(markers[newPointKey]._popup);
+    markers[newPointKey].openPopup();
+    mt.editPointPopup(newPointKey);
   }).error(function() { alert("could not add point"); } );
+
 }
-
 return mt;
-
 }($));
