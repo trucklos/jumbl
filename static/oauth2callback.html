@@ -16,13 +16,12 @@
 		}
 
 		var token_validator = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + params['access_token'];
-		alert(token_validator);
-
+		
 		$.getJSON(token_validator, function(data) {
   			var items = [];
 
   			$.each(data, function(key, val) {
-    			items.push('<li id="' + key + '">' + key + ':' + val + '</li>');
+    			items.push('<li id="' + key + '">' + key + ': ' + val + '</li>');
 			});
 
   			$('<ul/>', {'class': 'my-new-list', html: items.join('') }).appendTo('body');
