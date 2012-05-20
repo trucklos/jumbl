@@ -5,86 +5,26 @@
     <meta charset="utf-8">
 
     <title>jQuery demo</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-				
-		var OAUTHURL    =   'https://accounts.google.com/o/oauth2/auth?';
-        var VALIDURL    =   'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';
-        var SCOPE       =   'https://www.googleapis.com/auth/userinfo.profile';
-        var CLIENTID    =   '57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com';
-        var REDIRECT    =   'http://mapthing.carlos.ag/oauth2callback'
-        var TYPE        =   'token';
-        var _url        =   OAUTHURL + 'scope=' + SCOPE + '&client_id=' + CLIENTID + '&redirect_uri=' + REDIRECT + '&response_type=' + TYPE;
-        var acToken;
-        var tokenType;
-        var expiresIn;
-        var user;
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	<script>
+		
+		var link = "https://accounts.google.com/o/oauth2/auth?" +
+					"scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
+					"state=%2Fprofile&" + 
+					"redirect_uri=http%3A%2F%2Fmapthing.carlos.ag%2Foauth2callback.html&" + 
+					"response_type=token&" +
+					"client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
 
-        function login() {
-            var win         =   window.open(_url, "windowname1", 'width=800, height=600'); 
-
-            var pollTimer   =   window.setInterval(function() { 
-                if (win.document.URL.indexOf(REDIRECT) != -1) {
-                    window.clearInterval(pollTimer);
-                    var url =   win.document.URL;
-                    acToken =   gup(url, 'access_token');
-                    tokenType = gup(url, 'token_type');
-                    expiresIn = gup(url, 'expires_in');
-                    win.close();
-
-                    validateToken(acToken);
-                }
-            }, 100);
-        }
-
-        function validateToken(token) {
-            $.ajax({
-                url: VALIDURL + token,
-                data: null,
-                success: function(responseText){  
-                    getUserInfo();
-                },  
-                dataType: "jsonp"  
-            });
-        }
-
-        function getUserInfo() {
-            $.ajax({
-                url: 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + acToken,
-                data: null,
-                success: function(resp) {
-                    user    =   resp;
-                    console.log(user);
-                    $('#uName').append(user.name);
-                    $('#imgHolder').attr('src', user.picture);
-                },
-                dataType: "jsonp"
-            });
-        }
-
-        //credits: http://www.netlobo.com/url_query_string_javascript.html
-        function gup(url, name) {
-            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-            var regexS = "[\\#&]"+name+"=([^&#]*)";
-            var regex = new RegExp( regexS );
-            var results = regex.exec( url );
-            if( results == null )
-                return "";
-            else
-                return results[1];
-        }
 		
 		$(document).ready(function(){
-       		
+       		$('a#google-login').attr('href', link);
 		});
 
     </script>
 </head>
 <body>
 
-<a href='#' onClick='login();'> click here to login </a>
-<div id='uName'>Welcome  </div>
-<img src='' id='imgHolder'/>
+<a href='#' id="google-login"> Login w/ Google </a>
 
 </body>
 </html>
