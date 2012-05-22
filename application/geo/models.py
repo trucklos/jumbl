@@ -3,6 +3,8 @@ from django.contrib import admin
 
 class User(models.Model):
    username = models.CharField(max_length=255, unique = True)
+   email = models.CharField(max_length=255)
+   googleid = models.CharField(max_length=255, unique = True)
    def __unicode__(self):
        return u'%s' % self.username
 
