@@ -6,7 +6,7 @@ class User(models.Model):
    email = models.CharField(max_length=255)
    googleid = models.CharField(max_length=255, unique = True)
    def __unicode__(self):
-       return u'%s' % self.username
+       return u'%s' % (self.username, self.email, self.googleid)
 
 class Path(models.Model):
    user = models.ForeignKey(User, related_name='paths')
