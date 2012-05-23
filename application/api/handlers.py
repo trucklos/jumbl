@@ -5,6 +5,10 @@ class UserHandler(BaseHandler):
   model = User
   fields = ('id', 'username', ('paths', ('id','description'), ), ) 
 
+class UserGoogleIdHandler(BaseHandler):
+  model = User
+  fields = ('id', 'googleid',)
+
 class PathHandler(BaseHandler):
   model = Path
   fields = ( 'id','description', ('points',('id','time','lat','lon','description'), ), )
