@@ -3,7 +3,7 @@ from geo.models import User, Path, Point
 
 class UserHandler(BaseHandler):
   model = User
-  fields = ('id', 'username', ('paths', ('id','description'), ), ) 
+  fields = ('id', 'username', 'googleid', ('paths', ('id','description'), ), ) 
 
 class UserGoogleIdHandler(BaseHandler):
   model = User
