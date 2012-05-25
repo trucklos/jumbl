@@ -22,17 +22,20 @@
 		$.getJSON(token_validator, function(data) {
   			
   			googleid = data['user_id'];
+  			alert('user_id ' + googleid);
 
-		});
-		
-		alert('user_id ' + googleid);
-		
-		$.getJSON('django/api/users/googleid/' + googleid, function(data) {
+			$.getJSON('django/api/users/googleid/' + googleid, function(data) {
   				
   				alert('mapthing id ' + data['id']);
   				window.location.replace("?userid=" + data['id']);
   				
   			});
+
+		});
+		
+		
+		
+		
 		
 		$(document).ready(function(){
        		
