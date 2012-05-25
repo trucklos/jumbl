@@ -20,8 +20,9 @@
 		$.getJSON(token_validator, function(data) {
   			
   			$.each(data, function(key, val) {
-    			alert(key + ' ' + val);
-    			if (key === 'id') {
+    			//
+    			if (key === 'userid') {
+    				alert(key + ' ' + val);
     				//window.location.replace("http://mapthing.carlos.ag/?userid=" + val);
     			}
 			});
