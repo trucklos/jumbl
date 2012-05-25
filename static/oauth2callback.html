@@ -21,13 +21,12 @@
   			
   			alert('user_id ' + data['user_id']);
   			
-  			//$.each(data, function(key, val) {
-    		//	
-    		//	if (key === 'user_id') {
-    		//		
-    		//		//window.location.replace("http://mapthing.carlos.ag/?userid=" + val);
-    		//	}
-			//});
+  			$.getJSON('django/api/users/googleid/' + data['user_id'], function(data) {
+  				
+  				alert('mapthing id ' + data['id']);
+  				window.location.replace("?userid=" + data['id']);
+  				
+  			});
 
 		});
 		
