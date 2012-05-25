@@ -18,17 +18,13 @@
 		var token_validator = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + params['access_token'];
 		
 		$.getJSON(token_validator, function(data) {
-  			//var items = [];
-			
-			
-			
+  			
   			$.each(data, function(key, val) {
-    			if (key === id) {
+    			if (key === 'id') {
     				window.location.replace("http://mapthing.carlos.ag/?userid=" + val);
     			}
 			});
 
-  			//$('<ul/>', {'class': 'my-new-list', html: items.join('') }).appendTo('body');
 		});
 		
 		$(document).ready(function(){
