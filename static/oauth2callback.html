@@ -23,6 +23,7 @@
   			
   			$.getJSON('django/api/users/googleid/' + data['user_id'], function(data) {
   				
+  				alert('mapthing id ' + data['id']);
   				window.location.replace("?userid=" + data['id']);
   				
   			});
