@@ -21,9 +21,9 @@
   			
   			alert('user_id ' + data['user_id']);
   			
-  			$.getJSON('django/api/users/googleid/' + data['user_id'], function(data) {
+  			$.getJSON('django/api/users/googleid/' + data['user_id'], function(new_data) {
   				
-  				alert('mapthing id ' + data['id']);
+  				alert('mapthing id ' + new_data['id']);
   				window.location.replace("?userid=" + data['id']);
   				
   			});
