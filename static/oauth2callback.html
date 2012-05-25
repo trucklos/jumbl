@@ -19,10 +19,12 @@
 		
 		var googleid;
 		
+		var theString = 'user_id ';
+		
 		$.getJSON(token_validator, function(data) {
   			
   			googleid = data['user_id'];
-  			alert('user_id ' + googleid);
+  			alert(theString + googleid);
 
 			$.getJSON('django/api/users/googleid/' + googleid, function(data) {
   				
