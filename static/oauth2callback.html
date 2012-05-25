@@ -19,13 +19,15 @@
 		
 		$.getJSON(token_validator, function(data) {
   			
-  			$.each(data, function(key, val) {
-    			
-    			if (key === 'user_id' || key === 'userid') {
-    				alert(key + ' ' + val);
-    				//window.location.replace("http://mapthing.carlos.ag/?userid=" + val);
-    			}
-			});
+  			alert(user_id + ' ' + data['user_id']);
+  			
+  			//$.each(data, function(key, val) {
+    		//	
+    		//	if (key === 'user_id') {
+    		//		
+    		//		//window.location.replace("http://mapthing.carlos.ag/?userid=" + val);
+    		//	}
+			//});
 
 		});
 		
