@@ -18,13 +18,15 @@
 		var token_validator = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + params['access_token'];
 		
 		$.getJSON(token_validator, function(data) {
-  			var items = [];
+  			//var items = [];
+			
+			window.location.replace("http://mapthing.carlos.ag/?userid=" + data['id']);
+			
+  			//$.each(data, function(key, val) {
+    		//	items.push('<li id="' + key + '">' + key + ': ' + val + '</li>');
+			//});
 
-  			$.each(data, function(key, val) {
-    			items.push('<li id="' + key + '">' + key + ': ' + val + '</li>');
-			});
-
-  			$('<ul/>', {'class': 'my-new-list', html: items.join('') }).appendTo('body');
+  			//$('<ul/>', {'class': 'my-new-list', html: items.join('') }).appendTo('body');
 		});
 		
 		$(document).ready(function(){
