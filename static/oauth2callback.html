@@ -28,8 +28,12 @@
 
 			$.getJSON('django/api/users/googleid/' + googleid, function(data) {
   				
-  				alert('mapthing id ' + data['id']);
-  				window.location.replace("?userid=" + data['id']);
+  				$.each(data, function(key, val) {
+    				alert(key + ' ' + val);
+  				});
+  				
+  				//alert('mapthing id ' + data['id']);
+  				//window.location.replace("?userid=" + data['id']);
   				
   			});
 
