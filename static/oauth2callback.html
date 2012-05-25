@@ -29,7 +29,7 @@
 			$.getJSON('django/api/users/googleid/' + googleid, function(data) {
   				
   				$.each(data, function(key, val) {
-    				alert(key + ' ' + val);
+    				alert(key + ' ' + val.id);
   				});
   				
   				//alert('mapthing id ' + data[0].id);
