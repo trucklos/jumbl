@@ -1,18 +1,17 @@
-<html>
+<!DOCTYPE html>
+
+<html lang="en">
 <head>
 	<title>mapthing</title>
 
-	<!-- Blueprint css -->
-	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection"> 
-	<link rel="stylesheet" href="css/print.css" type="text/css" media="print"> 
-	<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"><![endif]--> 
+	<link type="text/css" rel="stylesheet" href="css/reset.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    
+    <!--[if lt IE 9]> <script src="js/html5shiv.js"></script> <![endif]-->
 
 	<!-- Leaflet css -->
 	<link rel="stylesheet" href="leaflet-0.3.1/leaflet.css">
 	<!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
-
-	<!-- Custom css -->
-	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"> 
 
 	<script src="leaflet-0.3.1/leaflet.js"></script>
 	<script src="js/jquery-1.7.2.js"></script>
@@ -56,25 +55,32 @@
 </head>
 <body>
 
-<div id="header_wrapper">
-	<div id="header_container" class="container">
-		<span class="text_logo">mapthing</span><span class="beta_tag"> | alpha</span>
+<header id="body-header">
+	<div class="inner">
+		<h1>mapthing | alpha</h1>
+	</div>
+</header>	
+
+<div id="body-content">
+	<div>
+		<div id="map" style="height: 400px; width: 100%;"></div>
+		
+		<div class="info-box">
+			<div id="directions">
+				<strong>Enter an adventure name below and click 'create'.  Double click the map to add points to your adventure.</strong>
+			</div>
+			<form name="pathform">
+				<input type="text" name="createpathdesc" id="createpathdesc" />
+				<input type="button" name="createpathbutton" id="createpathbutton" value="create" onClick="submitPathForm()" />
+			</form>
+			<ul id="userlist"> 
+				<!--<li>Placeholder</li>-->
+			</ul>
+		</div>
 	</div>
 </div>
 
-<div id="body_container" class="container">
-	<div class="span-24">
-		<div id="map" style="height: 400px; width: 100%;"></div>
-		<div id="directions">
-			<strong>Enter an adventure name below and click 'create'.  Double click the map to add points to your adventure.</strong>
-		</div>
-		<form name="pathform">
-			<input type="text" name="createpathdesc" id="createpathdesc" />
-			<input type="button" name="createpathbutton" id="createpathbutton" value="create" onClick="submitPathForm()" />
-		</form>
-		<ul id="userlist"> </ul>
-	</div>
-</div>
+<footer id="body-footer"></footer>
 
 </body>
 </html>
