@@ -29,7 +29,14 @@
 		$(document).ready(function() {
 			MapThing.initMap('map');
 
-			userid = MapThing.getQueryVariable("userid",1);
+			var gid = MapThing.getQueryVariable("gid",-1);
+			var userid = -1;
+
+			$.getJSON('django/api/fetchbygid/' + gid, function(data) {
+  				userid = data[0].id;
+   			});
+   			
+   			alert(userid);
 			var url = 'django/api/users/'+userid;
 
 			$.getJSON(url, function(user){

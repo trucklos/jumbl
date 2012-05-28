@@ -17,27 +17,10 @@
 
 		var token_validator = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + params['access_token'];
 		
-		var googleid;
-		
-		var theString = 'user_id ';
-		
 		$.getJSON(token_validator, function(data) {
-  			
-  			googleid = data['user_id'];
-  			alert(theString + googleid);
-
-			$.getJSON('django/api/fetchbygid/' + googleid, function(data) {
-  				
-  				var mapthing_id = data[0].id;
-  				window.location.replace("http://mapthing.carlos.ag/?userid=" + mapthing_id);
-  				
-  			});
-
+  			var gid = data['user_id'];
+			window.location.replace("http://mapthing.carlos.ag/?gid=" + gid);
 		});
-		
-		
-		
-		
 		
 		$(document).ready(function(){
        		
