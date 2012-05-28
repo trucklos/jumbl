@@ -34,15 +34,11 @@
 
 			$.getJSON('django/api/fetchbygid/' + gid, function(data) {
   				userid = data[0].id;
-  				alert("in getJson" + userid);
+  				var url = 'django/api/users/'+userid;
+  				$.getJSON(url, function(user){
+					MapThing.loadUserPathList(user.paths);
+				});
    			});
-   			
-   			alert("after getJson" + userid);
-			var url = 'django/api/users/'+userid;
-
-			$.getJSON(url, function(user){
-				MapThing.loadUserPathList(user.paths);
-			});
 		});
 	</script>
 
