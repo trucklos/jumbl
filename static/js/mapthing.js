@@ -66,7 +66,7 @@ mt.editPointPopup = function(markerKey){
   marker._popup.setContent("<form id='editForm' onsubmit='MapThing.updateDescription("+markerKey+",$(\"#desc\").val());' action='javascript:void(0)'>"+
     "<input type='text' id='desc' value='"+ (marker.point.description == null ? "" : marker.point.description)+"' />"+
     "</form>"+
-    "<br/> <a href=''> delete </a>");
+    "<br/> <a href='javascript:void(0)' onclick='MapThing.deletePointDescription("+markerKey+")'> delete </a>");
     $('#desc').focus();
 }
 
@@ -77,12 +77,21 @@ mt.showPointPopup = function(markerKey){
 
 mt.updateDescription = function(pointKey, description){
   var point = currentPath.points[pointKey];
-  console.log(point);
   point.description = description;
   $.ajax({type: 'PUT', url: 'django/api/points/'+point.id,
                 data: { 'description': description }
         });
   mt.showPointPopup(pointKey);
+}
+
+mt.deletePointDescription = function(pointKey){
+  var point = currentPath.points[pointKey];
+  currentPath.points.splice(pointKey,1);
+  $.ajax({type: 'DELETE', 
+      url: 'django/api/points/'+point.id
+    }).done(function(){
+      mt.getAndDrawPath(currentPath.id, false);
+    });
 }
 
 function drawPath(path, zoom) {
@@ -175,7 +184,6 @@ addPoint = function(lat, lng){
     var newPointKey = currentPath.points.length;
     currentPath.points.push(point);
     drawPath(currentPath, false);
-    console.log(markers[newPointKey]._popup);
     markers[newPointKey].openPopup();
     mt.editPointPopup(newPointKey);
   }).error(function() { alert("could not add point"); } );
