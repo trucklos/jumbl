@@ -4,10 +4,10 @@ from api.handlers import *
 
 path_handler = Resource(PathHandler)
 user_handler = Resource(UserHandler)
-user_googleid_handler = Resource(UserGoogleIdHandler)
 point_handler = Resource(PointHandler)
 user_path_handler = Resource(UserPathHandler)
 path_point_handler = Resource(PathPointHandler)
+user_googleid_handler = Resource(UserGoogleIdHandler)
 
 urlpatterns = patterns('',
 
