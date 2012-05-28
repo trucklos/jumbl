@@ -35,6 +35,7 @@
 			$.getJSON('django/api/fetchbygid/' + gid, function(data) {
   				userid = data[0].id;
   				var url = 'django/api/users/'+userid;
+  				alert(url);
   				$.getJSON(url, function(user){
 					MapThing.loadUserPathList(user.paths);
 				});
