@@ -14,7 +14,7 @@ urlpatterns = patterns('',
   url(r'^users[/]$', user_handler),
   url(r'^users/(?P<id>\d+)[/]?$', user_handler),
   url(r'^users/(?P<userId>\d+)/paths[/]?$', user_path_handler),
-  url(r'^users/googleid/(?P<googleid>\d+)[/]?$', user_googleid_handler),
+  url(r'^fetchbygid/(?P<googleid>\d+)[/]?$', user_googleid_handler),
 
   url(r'^paths[/]$', path_handler),
   url(r'^paths/(?P<id>\d+)[/]?$', path_handler),
