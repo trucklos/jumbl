@@ -34,10 +34,10 @@
 
 			$.getJSON('django/api/fetchbygid/' + gid, function(data) {
   				userid = data[0].id;
-  				alert(userid);
+  				alert("in getJson" + userid);
    			});
    			
-   			alert(userid);
+   			alert("after getJson" + userid);
 			var url = 'django/api/users/'+userid;
 
 			$.getJSON(url, function(user){
