@@ -3,7 +3,18 @@ from geo.models import User, Path, Point
 
 class UserHandler(BaseHandler):
   model = User
-  fields = ('id', 'username', ('paths', ('id','description'), ), ) 
+  
+  def read(self, request, userId=None, googleId=None):
+    base = User.objects
+    
+    if userId:
+      return base.get(pk=userId)=
+    elif googleid:
+      return base.get(googleid=googleId)
+    else:
+      return base.all()
+
+  #fields = ('id', 'username', ('paths', ('id','description'), ), ) 
 
 class UserGoogleIdHandler(BaseHandler):
   model = User
