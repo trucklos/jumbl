@@ -11,6 +11,7 @@ class UserHandler(BaseHandler):
     if id:
       return base.get(pk=id)
     elif googleId:
+      fields = ('id', )
       return base.get(googleid__exact=googleId)
     else:
       return base.all()
