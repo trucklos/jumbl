@@ -11,14 +11,9 @@ class UserHandler(BaseHandler):
     if id:
       return base.get(pk=id)
     elif googleId:
-      fields = ('id', )
-      return base.get(googleid__exact=googleId)
+      return base.get(googleid__exact=googleId).id
     else:
       return base.all()
-
-#class UserGoogleIdHandler(BaseHandler):
-#  model = User
-#  fields = ('id', 'googleid',)
 
 class PathHandler(BaseHandler):
   model = Path
