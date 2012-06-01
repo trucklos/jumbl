@@ -8,7 +8,7 @@ class UserHandler(BaseHandler):
     base = User.objects
     
     if userId:
-      return base.get(pk=userId)=
+      return base.get(pk=userId)
     elif googleid:
       return base.get(googleid=googleId)
     else:
