@@ -16,9 +16,9 @@ class UserHandler(BaseHandler):
 
   #fields = ('id', 'username', ('paths', ('id','description'), ), ) 
 
-class UserGoogleIdHandler(BaseHandler):
-  model = User
-  fields = ('id', 'googleid',)
+#class UserGoogleIdHandler(BaseHandler):
+#  model = User
+#  fields = ('id', 'googleid',)
 
 class PathHandler(BaseHandler):
   model = Path
