@@ -4,13 +4,13 @@ from geo.models import User, Path, Point
 class UserHandler(BaseHandler):
   model = User
   
-  def read(self, request, userId=None, googleId=None):
+  def read(self, request, userId=None):
     base = User.objects
     
     if userId:
       return base.get(pk=userId)
-    elif googleid:
-      return base.get(googleid=googleId)
+    #elif googleid:
+    #  return base.get(googleid=googleId)
     else:
       return base.all()
 
