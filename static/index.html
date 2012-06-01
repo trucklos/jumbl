@@ -36,11 +36,16 @@
 			var userid = -1;
 
 			$.getJSON('django/api/fetchbygid/' + gid, function(data) {
-  				userid = data[0].id;
-  				var url = 'django/api/users/'+userid;
-  				$.getJSON(url, function(user){
-					MapThing.loadUserPathList(user.paths);
-				});
+  				
+  				if ( jQuery.isEmptyObject(data) ) {
+					alert("Looks like your not in the database yet");
+				} else {
+  					userid = data[0].id;
+  					var url = 'django/api/users/'+userid;
+  					$.getJSON(url, function(user){
+						MapThing.loadUserPathList(user.paths);
+					});
+				}
    			});
 		});
 	</script>
