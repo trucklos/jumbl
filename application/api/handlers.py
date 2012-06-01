@@ -7,7 +7,7 @@ class UserHandler(BaseHandler):
   def read(self, request, id=None, googleid=None):
     base = User.objects
     
-    if userId:
+    if id:
       return base.get(pk=id)
     elif googleid:
       return base.get(googleid=googleId)
