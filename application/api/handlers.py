@@ -4,16 +4,6 @@ from geo.models import User, Path, Point
 class UserHandler(BaseHandler):
   model = User
   fields = ('id', 'username', ('paths', ('id','description'), ), )
- 
-  #def read(self, request, id=None, googleId=None):
-  #  base = User.objects
-    
-  #  if id:
-  #    return base.get(pk=id)
-  #  elif googleId:
-  #    return base.get(googleid__exact=googleId)
-  #  else:
-  #    return base.all()
 
 class PathHandler(BaseHandler):
   model = Path
@@ -25,9 +15,10 @@ class PointHandler(BaseHandler):
   fields = ( 'id','lat','lon','time','description',)
 
 class UserGoogleIdLookup(BaseHandler):
+  fields = ('id', )
   def read(self, request, googleId):
     if googleId != None:
-      return User.objects.get(googleid__exact=googleId)
+      return User.objects.filter(googleid__exact=googleId)
 
 class UserPathHandler(BaseHandler):
   def read(self, request, userId):
