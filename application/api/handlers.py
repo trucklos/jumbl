@@ -4,7 +4,7 @@ from geo.models import User, Path, Point
 class UserHandler(BaseHandler):
   model = User
   
-  def read(self, request, id=None, googleid=None):
+  def read(self, request, id=None, googleId=None):
     base = User.objects
     
     if id:
