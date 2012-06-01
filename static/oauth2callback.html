@@ -18,8 +18,12 @@
 		var token_validator = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + params['access_token'];
 		
 		$.getJSON(token_validator, function(data) {
-  			var gid = data['user_id'];
-			window.location.replace("http://mapthing.carlos.ag/?gid=" + gid);
+  			if ( jQuery.isEmptyObject(data) ) {
+				alert("Looks like your not in the database yet");
+			} else {
+				var gid = data['user_id'];
+				window.location.replace("http://mapthing.carlos.ag/?gid=" + gid);
+			}
 		});
 		
 		$(document).ready(function(){
