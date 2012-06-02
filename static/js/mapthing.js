@@ -160,7 +160,8 @@ mt.loadUserPathList = function(pathList) {
         $.each(pathList, function (key, val) {
             var description = val.description;
             var pathid = val.id;
-            pathItems.push('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+val.id+'\')">' + val.description + '</a></li>');
+            pathItems.push('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+val.id+'\')">' + val.description + '</a>'+
+               '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>');
         });
         $('ul#userlist').empty();
         $('ul#userlist').append( pathItems.join('\n') );
