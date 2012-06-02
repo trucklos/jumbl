@@ -46,7 +46,6 @@ mt.getQueryVariable = function(variable, defaultval) {
   
   var query = window.location.search.substring(1); 
   var vars = query.split("&"); 
-
   for (var i=0; i<vars.length; i++) { 
     var pair = vars[i].split("="); 
     if (pair[0] == variable) { 
@@ -56,21 +55,16 @@ mt.getQueryVariable = function(variable, defaultval) {
   return defaultval;
 } 
 
-function editPath(path){
-  currentPath = path;
-}
-
 mt.editPointPopup = function(markerKey){
   var marker = markers[markerKey];
-// MapThing.updateDescription(\"markerKey\",
   marker._popup.setContent("<form id='editForm' onsubmit='MapThing.updateDescription("+markerKey+",$(\"#desc\").val());' action='javascript:void(0)'>"+
     "<input type='text' id='desc' value='"+ (marker.point.description == null ? "" : marker.point.description)+"' />"+
     "</form>"+
-    "<br/> <a href='javascript:void(0)' onclick='MapThing.deletePointDescription("+markerKey+")'> delete </a>");
+    "<br/> <a href='javascript:void(0)' onclick='MapThing.deletePoint("+markerKey+")'> delete </a>");
     $('#desc').focus();
 }
 
-mt.showPointPopup = function(markerKey){
+mt.setPointPopup = function(markerKey, editable){
   var marker = markers[markerKey];
   marker._popup.setContent( (marker.point.description == null ? "" : marker.point.description) + "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>");
 }
@@ -81,66 +75,64 @@ mt.updateDescription = function(pointKey, description){
   $.ajax({type: 'PUT', url: 'django/api/points/'+point.id,
                 data: { 'description': description }
         });
-  mt.showPointPopup(pointKey);
+  mt.setPointPopup(pointKey);
 }
 
-mt.deletePointDescription = function(pointKey){
+mt.deletePoint = function(pointKey){
   var point = currentPath.points[pointKey];
   currentPath.points.splice(pointKey,1);
   $.ajax({type: 'DELETE', 
       url: 'django/api/points/'+point.id
     }).done(function(){
-      mt.getAndDrawPath(currentPath.id, false);
+      // TODO: if we wanted to make this consistent with the other calls, we could just delete the point locally and redraw locally and then send the delete request.  This would make the interface a little snappier.
+      mt.getAndDrawPath(currentPath.id, false, true);
     });
 }
 
-function drawPath(path, zoom) {
+function drawPath(path, zoom, editable) {
   var zoom = typeof(zoom) === 'undefined' ? true : zoom; 
-
+  var editable = typeof(zoom) === 'undefined' ? false : editable; 
   allPathsLayer.clearLayers();
   markers = []
-
   var latlngs = [];
   if (path.points.length > 0) {
     $.each(path.points, function (key, val) {
       var point = new L.LatLng(val.lat, val.lon);
       latlngs.push(point);
-
       markers[key] = new L.Marker(point, {'draggable':true} );
       allPathsLayer.addLayer(markers[key]);
-
       markers[key].bindPopup('');
       markers[key].point = val;
       markers[key].path = path
-      mt.showPointPopup(key);
-
-      markers[key].on('dragend', function(e){
-        this.point.lat = this._latlng.lat;
-        this.point.lon = this._latlng.lng;
-        drawPath(this.path)
-        $.ajax({type: 'PUT', url: 'django/api/points/'+this.point.id,
+      if(editable){
+        markers[key].on('dragend', function(e){
+          this.point.lat = this._latlng.lat;
+          this.point.lon = this._latlng.lng;
+          // TODO: figure out what the proper scope of editable is right here.  I defined it outside of the callback, can I use it statically here?  Probably not?  -cga
+          drawPath(this.path, false, true);
+          $.ajax({type: 'PUT', url: 'django/api/points/'+this.point.id,
                 data: { 'lat': this._latlng.lat , 'lon': this._latlng.lng }
-        })
-      });
+          })
+        });
+      }
+      mt.setPointPopup(key);
     });
-
     var polyline = new L.Polyline(latlngs ); 
     allPathsLayer.addLayer(polyline);
     if(zoom)
       map.fitBounds(new L.LatLngBounds(latlngs));
   }
+  currentPath = path;
 }
 
-mt.getAndDrawPath = function(pathId, callback){
+mt.getAndDrawPath = function(pathId, zoom, editable, callback){
   var url = 'django/api/paths/'+pathId;
   $.getJSON(url, function(path){
-    drawPath(path);
-    editPath(path);
+    drawPath(path, zoom, editable);
   }).done( function(path){
-    console.log(path);
-    callback(path);
+    if(typeof(callback) != 'undefined')
+      callback(path);
   });
-
 }
 
 function ISODateString(d) {
@@ -160,7 +152,7 @@ mt.loadUserPathList = function(pathList) {
         $.each(pathList, function (key, val) {
             var description = val.description;
             var pathid = val.id;
-            pathItems.push('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+val.id+'\')">' + val.description + '</a>'+
+            pathItems.push('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+val.id+'\', true, true)">' + val.description + '</a>'+
                '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>');
         });
         $('ul#userlist').empty();
@@ -168,15 +160,13 @@ mt.loadUserPathList = function(pathList) {
 }
 
 mt.createPath = function(description, createForUser){
-
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
     currentPath = path;
     drawPath(currentPath, false);
     // For now let's just tack it on to the end of the path list
     // TODO: maintain a list of paths so we can access them later
-    $('ul#userlist').append('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+path.id+'\')">' + path.description + '</a></li>');
+    $('ul#userlist').append('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+path.id+'\', false, true)">' + path.description + '</a></li>');
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
-
 }
 
 addPoint = function(lat, lng){
@@ -184,15 +174,15 @@ addPoint = function(lat, lng){
   var currentTime = new Date();
   var timeFormat = ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat, 'description': description};
-  
   $.post("django/api/points/", postVars, function(point){
     var newPointKey = currentPath.points.length;
     currentPath.points.push(point);
-    drawPath(currentPath, false);
+    drawPath(currentPath, false, true);
     markers[newPointKey].openPopup();
     mt.editPointPopup(newPointKey);
   }).error(function() { alert("could not add point"); } );
-
 }
+
 return mt;
+
 }($));
