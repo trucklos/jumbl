@@ -131,12 +131,16 @@ function drawPath(path, zoom) {
   }
 }
 
-mt.getAndDrawPath = function(pathId){
+mt.getAndDrawPath = function(pathId, callback){
   var url = 'django/api/paths/'+pathId;
   $.getJSON(url, function(path){
     drawPath(path);
     editPath(path);
+  }).done( function(path){
+    console.log(path);
+    callback(path);
   });
+
 }
 
 function ISODateString(d) {
