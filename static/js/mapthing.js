@@ -65,8 +65,9 @@ mt.editPointPopup = function(markerKey){
 }
 
 mt.setPointPopup = function(markerKey, editable){
+  var editable = typeof(editable) === 'undefined' ? false : editable; 
   var marker = markers[markerKey];
-  marker._popup.setContent( (marker.point.description == null ? "" : marker.point.description) + "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>");
+  marker._popup.setContent( (marker.point.description == null ? "" : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
 }
 
 mt.updateDescription = function(pointKey, description){
@@ -99,11 +100,12 @@ function drawPath(path, zoom, editable) {
     $.each(path.points, function (key, val) {
       var point = new L.LatLng(val.lat, val.lon);
       latlngs.push(point);
-      markers[key] = new L.Marker(point, {'draggable':true} );
+      markers[key] = new L.Marker(point, {'draggable':editable} );
       allPathsLayer.addLayer(markers[key]);
       markers[key].bindPopup('');
       markers[key].point = val;
       markers[key].path = path
+
       if(editable){
         markers[key].on('dragend', function(e){
           this.point.lat = this._latlng.lat;
@@ -115,8 +117,9 @@ function drawPath(path, zoom, editable) {
           })
         });
       }
-      mt.setPointPopup(key);
+      mt.setPointPopup(key, editable);
     });
+
     var polyline = new L.Polyline(latlngs ); 
     allPathsLayer.addLayer(polyline);
     if(zoom)

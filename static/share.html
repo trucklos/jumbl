@@ -26,10 +26,10 @@
       MapThing.initMap('map');
 
       pathid = MapThing.getQueryVariable("pathid",1);
-      MapThing.getAndDrawPath(pathid, function(path){
+      MapThing.getAndDrawPath(pathid, true, false, function(path){
         b=0;
         $.each(path.points, function(key,val){
-          $('#path').append('<div class="point">'+(++b)+'. <a href="#letsDoSomeCoolHoverShitWhereThePointsWillLightUp">'+(val.description == null ? "" : val.description)+'</a></div>\n');
+          $('#path').append('<div class="point">'+(++b)+'. <a href="">'+(val.description == null ? "" : val.description)+'</a></div>\n');
         });
       });
       /**/
