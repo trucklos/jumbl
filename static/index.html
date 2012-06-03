@@ -33,7 +33,6 @@
 			MapThing.initMap('map');
 
 			var gid = MapThing.getQueryVariable("gid",-1);
-			var userid = -1;
 
 			$.getJSON('django/api/fetchbygid/' + gid, function(data) {
   				
@@ -81,7 +80,7 @@
 		<div id="directions">
 			<strong>Enter an adventure name below and click 'create'.  Double click the map to add points to your adventure.</strong>
 		</div>
-		<form name="pathform">
+		<form name="pathform" action='javascript:void(0)' onsubmit="submitPathForm()">
 			<input type="text" name="createpathdesc" id="createpathdesc" />
 			<input type="button" name="createpathbutton" id="createpathbutton" value="create" onClick="submitPathForm()" />
 		</form>

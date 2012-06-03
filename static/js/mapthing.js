@@ -166,22 +166,26 @@ function ISODateString(d) {
 mt.loadUserPathList = function(pathList) {
         pathItems = [];
         $.each(pathList, function (key, val) {
-            var description = val.description;
-            var pathid = val.id;
-            pathItems.push('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+val.id+'\', true, true)">' + val.description + '</a>'+
-               '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>');
+            pathItems.push( getPathText(val) );
         });
         $('ul#userlist').empty();
         $('ul#userlist').append( pathItems.join('\n') );
 }
 
+function getPathText(path){
+  var description = path.description;
+  var pathid = path.id;
+  return '<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+pathid+'\', true, true)">' + description + '</a>'+
+               '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>';
+}
+
 mt.createPath = function(description, createForUser){
-  $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){ 
+  console.log(description);
+  console.log(createForUser);
+  $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
     drawPath(currentPath, false);
-    // For now let's just tack it on to the end of the path list
-    // TODO: maintain a list of paths so we can access them later
-    $('ul#userlist').append('<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+path.id+'\', false, true)">' + path.description + '</a></li>');
+    $('ul#userlist').append( getPathText(path) );
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
 }
 
