@@ -41,7 +41,7 @@ mt.initMap = function(elementId, locate){
   map.addLayer(allPathsLayer);
   map.on('dblclick',function(e){
         if(currentPath != null){ 
-          addPoint(e.latlng.lat, e.latlng.lng);
+          mt.addPoint(e.latlng.lat, e.latlng.lng);
         }
       });
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
@@ -77,7 +77,11 @@ mt.editPointPopup = function(markerKey){
 mt.setPointPopup = function(markerKey, editable){
   var editable = typeof(editable) === 'undefined' ? false : editable; 
   var marker = markers[markerKey];
-  marker._popup.setContent( (marker.point.description == null ? "" : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
+  //if(marker.point.description != null || editable ){
+    marker._popup.setContent( (marker.point.description == null ? " " : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
+  //}else{
+    //marker._popup.off();
+  //}
 }
 
 mt.updateDescription = function(pointKey, description){
