@@ -19,26 +19,26 @@ var userLong = null;
 var mt = {};
 
 // public function my.initMap
-mt.initMap = function(elementId){
+mt.initMap = function(elementId, locate){
+  var locate = typeof(locate) === 'undefined' ? true : locate; 
   currentPath = null;
   currentPathList = [];
-
   map = new L.Map(elementId, {'doubleClickZoom':false});
   allPathsLayer = new L.LayerGroup();
   map.addLayer(allPathsLayer);
-
   map.on('dblclick',function(e){
         if(currentPath != null){ 
           addPoint(e.latlng.lat, e.latlng.lng);
         }
       });
-
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
-  	
-  var initLat = 42.3875, initLong = -71.1;
-  map.addLayer(cloudmade).setView(new L.LatLng(initLat, initLong), 13);
- 
-  map.locate({setView: true, maxZoom: 13});
+  map.addLayer(cloudmade);
+  if(locate){
+    map.locate({setView: true, maxZoom: 13});
+  }else{
+    var somervilleLat = 42.3875, somervilleLon = -71.1;
+    map.setView(new L.LatLng(somervilleLat, somervilleLon), 12 );
+  }
 }
 
 // my.initMap public function 
@@ -98,6 +98,7 @@ function drawPath(path, zoom, editable) {
   var latlngs = [];
   if (path.points.length > 0) {
     $.each(path.points, function (key, val) {
+      console.log(val);
       var point = new L.LatLng(val.lat, val.lon);
       latlngs.push(point);
       markers[key] = new L.Marker(point, {'draggable':editable} );
@@ -110,7 +111,6 @@ function drawPath(path, zoom, editable) {
         markers[key].on('dragend', function(e){
           this.point.lat = this._latlng.lat;
           this.point.lon = this._latlng.lng;
-          // TODO: figure out what the proper scope of editable is right here.  I defined it outside of the callback, can I use it statically here?  Probably not?  -cga
           drawPath(this.path, false, true);
           $.ajax({type: 'PUT', url: 'django/api/points/'+this.point.id,
                 data: { 'lat': this._latlng.lat , 'lon': this._latlng.lng }
