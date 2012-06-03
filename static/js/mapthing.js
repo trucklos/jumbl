@@ -18,6 +18,19 @@ var userLong = null;
 // module variable
 var mt = {};
 
+mt.getQueryVariable = function(variable, defaultval) { 
+  
+  var query = window.location.search.substring(1); 
+  var vars = query.split("&"); 
+  for (var i=0; i<vars.length; i++) { 
+    var pair = vars[i].split("="); 
+    if (pair[0] == variable) { 
+        return pair[1]; 
+    } 
+  }   
+  return defaultval;
+} 
+
 // public function my.initMap
 mt.initMap = function(elementId, locate){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
@@ -41,19 +54,16 @@ mt.initMap = function(elementId, locate){
   }
 }
 
-// my.initMap public function 
-mt.getQueryVariable = function(variable, defaultval) { 
-  
-  var query = window.location.search.substring(1); 
-  var vars = query.split("&"); 
-  for (var i=0; i<vars.length; i++) { 
-    var pair = vars[i].split("="); 
-    if (pair[0] == variable) { 
-        return pair[1]; 
-    } 
-  }   
-  return defaultval;
-} 
+
+mt.locate = function(){
+  map.locate({setView: true});
+}
+
+mt.dropPointCenter = function(){
+  var mid = map.getCenter(); 
+  console.log(mid);
+  mt.addPoint(mid.lat, mid.lng);
+}
 
 mt.editPointPopup = function(markerKey){
   var marker = markers[markerKey];
@@ -98,7 +108,6 @@ function drawPath(path, zoom, editable) {
   var latlngs = [];
   if (path.points.length > 0) {
     $.each(path.points, function (key, val) {
-      console.log(val);
       var point = new L.LatLng(val.lat, val.lon);
       latlngs.push(point);
       markers[key] = new L.Marker(point, {'draggable':editable} );
@@ -172,7 +181,7 @@ mt.createPath = function(description, createForUser){
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
 }
 
-addPoint = function(lat, lng){
+mt.addPoint = function(lat, lng){
   var description = ""; //prompt("Please enter a description for this point.");
   var currentTime = new Date();
   var timeFormat = ISODateString(currentTime);
