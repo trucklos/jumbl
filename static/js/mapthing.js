@@ -76,7 +76,7 @@ mt.updateDescription = function(pointKey, description){
   $.ajax({type: 'PUT', url: 'django/api/points/'+point.id,
                 data: { 'description': description }
         });
-  mt.setPointPopup(pointKey);
+  mt.setPointPopup(pointKey, true);
 }
 
 mt.deletePoint = function(pointKey){
