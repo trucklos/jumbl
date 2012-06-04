@@ -3,6 +3,7 @@ from geo.models import User, Path, Point
 
 class UserHandler(BaseHandler):
   model = User
+  method = ('GET',)
   fields = ('id', 'username', ('paths', ('id','description'), ), )
 
 class PathHandler(BaseHandler):
