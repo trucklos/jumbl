@@ -167,8 +167,8 @@ mt.loadUserPathList = function(pathList) {
         pathItems = [];
         pathSelectItems = [];
         $.each(pathList, function (key, val) {
-            pathItems.push( getPathText(val) );
-            pathSelectItems.push( getSelectItemText(val) );
+            pathItems.push( mt.getPathText(val) );
+            pathSelectItems.push( mt.getSelectItemText(val) );
         });
         $('ul#userlist').empty();
         $('ul#userlist').append( pathItems.join('\n') );
@@ -201,7 +201,7 @@ mt.createPath = function(description, createForUser){
 mt.addPoint = function(lat, lng){
   var description = ""; //prompt("Please enter a description for this point.");
   var currentTime = new Date();
-  var timeFormat = ISODateString(currentTime);
+  var timeFormat = mt.ISODateString(currentTime);
   var postVars = {'path_id': currentPath.id, 'lat': lat,'lon': lng, 'time': timeFormat, 'description': description};
   $.post("django/api/points/", postVars, function(point){
     var newPointKey = currentPath.points.length;
