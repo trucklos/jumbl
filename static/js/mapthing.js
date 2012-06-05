@@ -144,7 +144,7 @@ mt.drawPath = function(path, zoom, editable) {
 mt.getAndDrawPath = function(pathId, zoom, editable, callback){
   var url = 'django/api/paths/'+pathId;
   $.getJSON(url, function(path){
-    drawPath(path, zoom, editable);
+    mt.drawPath(path, zoom, editable);
   }).done( function(path){
     if(typeof(callback) != 'undefined')
       callback(path);
@@ -172,6 +172,10 @@ mt.loadUserPathList = function(pathList) {
         });
         $('ul#userlist').empty();
         $('ul#userlist').append( pathItems.join('\n') );
+        
+        $('select#pathSelectList').empty();
+        $('select#pathSelectList').append(pathSelectItems.join('\n') );
+        
 }
 
 mt.getPathText = function(path){
