@@ -19,6 +19,7 @@ div.button {
 	float: left;
 	padding: 10px 10px 10px 10px;
 	border: 1px solid black;
+	font-size: 1em;
 	
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
