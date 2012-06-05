@@ -12,6 +12,8 @@ body {
 	font-family: Verdana, san-serif;
 }
 
+/********************** Buttons *********************/
+
 div.button {
 	background: rgba(0, 0, 0, .7);
 	margin-bottom: 1em;
@@ -36,6 +38,16 @@ div.button:hover {
 div.button a {
 	color: white;
 	text-decoration: none;
+}
+
+div.button select {
+	padding: 13px;
+	background: none;
+	-webkit-appearance: none;
+	font-size: 1em;
+	color: white;
+	border: 0;
+	
 }
 
 /********************** Header *********************/

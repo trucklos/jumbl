@@ -104,7 +104,7 @@ mt.deletePoint = function(pointKey){
     });
 }
 
-function drawPath(path, zoom, editable) {
+mt.drawPath = function(path, zoom, editable) {
   var zoom = typeof(zoom) === 'undefined' ? true : zoom; 
   var editable = typeof(zoom) === 'undefined' ? false : editable; 
   allPathsLayer.clearLayers();
@@ -151,7 +151,7 @@ mt.getAndDrawPath = function(pathId, zoom, editable, callback){
   });
 }
 
-function ISODateString(d) {
+mt.ISODateString = function(d) {
     function pad(n){
         return n<10 ? '0'+n : n
     }
@@ -172,12 +172,14 @@ mt.loadUserPathList = function(pathList) {
         $('ul#userlist').append( pathItems.join('\n') );
 }
 
-function getPathText(path){
+mt.getPathText = function(path){
   var description = path.description;
   var pathid = path.id;
   return '<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+pathid+'\', true, true)">' + description + '</a>'+
                '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>';
 }
+
+
 
 mt.createPath = function(description, createForUser){
   console.log(description);

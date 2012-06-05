@@ -33,9 +33,11 @@
 		}
 
 		$(document).ready(function() {
+			
 			$('div.button').click(function() {
   				eval($(this).find('a').attr('onclick'));
 			});
+			$('div.button select').parent('div').css('padding','0');
 			
 			MapThing.initMap('map');
 
@@ -82,11 +84,17 @@
 <div id="body-content">
 	<div id="map" style="height: 400px; width: 100%;"></div>
 	
-  <div>
-  	<div class="button"><a href="javascript:void(0)" onclick="MapThing.locate()" >Locate on Map</a></div>
-  	<div class="button"><a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" >Drop Point</a></div>
-  	<div class="button"><a href="javascript:void(0)" onclick="submitPathForm()" >Create Path</a></div>
-  </div>
+	<div>
+	  	<div class="button"><a href="javascript:void(0)" onclick="MapThing.locate()" >Locate on Map</a></div>
+	  	<div class="button"><a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" >Drop Point</a></div>
+	  	<div class="button"><a href="javascript:void(0)" onclick="submitPathForm()" >Create Path</a></div>
+	  	<div class="button"><a href="javascript:void(0)" onclick="" >Share</a></div>
+	  	<div class="button">
+			<select>
+				
+			</select>
+	  	</div>
+	</div>
 	<div class="info-box">
 		<ul id="userlist"> 
 			<!--<li>Placeholder</li>-->
