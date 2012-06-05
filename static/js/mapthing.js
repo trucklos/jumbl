@@ -193,7 +193,7 @@ mt.createPath = function(description, createForUser){
   console.log(createForUser);
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
-    drawPath(currentPath, false);
+    mt.drawPath(currentPath, false);
     $('ul#userlist').append( getPathText(path) );
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
 }
