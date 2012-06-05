@@ -29,7 +29,7 @@ mt.getQueryVariable = function(variable, defaultval) {
     } 
   }   
   return defaultval;
-} 
+};
 
 // public function my.initMap
 mt.initMap = function(elementId, locate){
@@ -52,7 +52,7 @@ mt.initMap = function(elementId, locate){
     var somervilleLat = 42.3875, somervilleLon = -71.1;
     map.setView(new L.LatLng(somervilleLat, somervilleLon), 12 );
   }
-}
+};
 
 
 mt.locate = function(){
@@ -63,7 +63,7 @@ mt.dropPointCenter = function(){
   var mid = map.getCenter(); 
   console.log(mid);
   mt.addPoint(mid.lat, mid.lng);
-}
+};
 
 mt.editPointPopup = function(markerKey){
   var marker = markers[markerKey];
@@ -72,7 +72,7 @@ mt.editPointPopup = function(markerKey){
     "</form>"+
     "<br/> <a href='javascript:void(0)' onclick='MapThing.deletePoint("+markerKey+")'> delete </a>");
     $('#desc').focus();
-}
+};
 
 mt.setPointPopup = function(markerKey, editable){
   var editable = typeof(editable) === 'undefined' ? false : editable; 
@@ -82,7 +82,7 @@ mt.setPointPopup = function(markerKey, editable){
   //}else{
     //marker._popup.off();
   //}
-}
+};
 
 mt.updateDescription = function(pointKey, description){
   var point = currentPath.points[pointKey];
@@ -102,7 +102,7 @@ mt.deletePoint = function(pointKey){
       // TODO: if we wanted to make this consistent with the other calls, we could just delete the point locally and redraw locally and then send the delete request.  This would make the interface a little snappier.
       mt.getAndDrawPath(currentPath.id, false, true);
     });
-}
+};
 
 mt.drawPath = function(path, zoom, editable) {
   var zoom = typeof(zoom) === 'undefined' ? true : zoom; 
@@ -139,7 +139,7 @@ mt.drawPath = function(path, zoom, editable) {
       map.fitBounds(new L.LatLngBounds(latlngs));
   }
   currentPath = path;
-}
+};
 
 mt.getAndDrawPath = function(pathId, zoom, editable, callback){
   var url = 'django/api/paths/'+pathId;
@@ -149,7 +149,7 @@ mt.getAndDrawPath = function(pathId, zoom, editable, callback){
     if(typeof(callback) != 'undefined')
       callback(path);
   });
-}
+};
 
 mt.ISODateString = function(d) {
     function pad(n){
@@ -161,7 +161,7 @@ mt.ISODateString = function(d) {
     + pad(d.getUTCHours())+':'
     + pad(d.getUTCMinutes())+':'
     + pad(d.getUTCSeconds())+'Z'
-}
+};
 
 mt.loadUserPathList = function(pathList) {
         pathItems = [];
@@ -175,7 +175,7 @@ mt.loadUserPathList = function(pathList) {
         
         $('select#pathSelectList').empty();
         $('select#pathSelectList').append(pathSelectItems.join('\n') );       
-}
+};
 
 mt.getPathText = function(path){
   var description = path.description;
@@ -188,7 +188,7 @@ mt.getSelectItemText = function(path){
   var description = path.description;
   var pathid = path.id;
   return '<option value="' + pathid + '" >' + description + '</option>';
-}
+};
 
 
 mt.createPath = function(description, createForUser){
@@ -199,7 +199,7 @@ mt.createPath = function(description, createForUser){
     mt.drawPath(currentPath, false);
     $('ul#userlist').append( getPathText(path) );
   }).error(function() { alert("could not add path: probably a duplicate description"); } );
-}
+};
 
 mt.addPoint = function(lat, lng){
   var description = ""; //prompt("Please enter a description for this point.");
@@ -213,17 +213,17 @@ mt.addPoint = function(lat, lng){
     markers[newPointKey].openPopup();
     mt.editPointPopup(newPointKey);
   }).error(function() { alert("could not add point"); } );
-}
+};
 
 mt.shareFromSelect = function() {
 	var pathid = $('select#pathSelectList').val();
 	window.location = 'share.html?pathid=' + pathid;
-}
+};
 
 mt.drawSelectedPath = function() {
 	var selectedpathid = $('select#pathSelectList').val();
-	MapThing.getAndDrawPath(selectedpathid, true, true);
-}
+	mt.getAndDrawPath(selectedpathid, true, true);
+};
 
 return mt;
 
