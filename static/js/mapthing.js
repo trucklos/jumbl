@@ -174,10 +174,7 @@ mt.loadUserPathList = function(pathList) {
         $('ul#userlist').append( pathItems.join('\n') );
         
         $('select#pathSelectList').empty();
-        $('select#pathSelectList').append(pathSelectItems.join('\n') );
-        
-        
-        
+        $('select#pathSelectList').append(pathSelectItems.join('\n') );       
 }
 
 mt.getPathText = function(path){
