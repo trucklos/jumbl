@@ -41,7 +41,7 @@
 			$('select#pathSelectList').change(function() {
 				var selectedpathid = $('select#pathSelectList').val();
 				if (selectedpathid !== null) {
-					mt.getAndDrawPath(selectedpathid, true, true);
+					MapThing.getAndDrawPath(selectedpathid, true, true);
 				}
 			});
 			
