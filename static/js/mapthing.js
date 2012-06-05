@@ -176,6 +176,8 @@ mt.loadUserPathList = function(pathList) {
         $('select#pathSelectList').empty();
         $('select#pathSelectList').append(pathSelectItems.join('\n') );
         
+        mt.drawSelectedPath();
+        
 }
 
 mt.getPathText = function(path){
