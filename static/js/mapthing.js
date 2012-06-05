@@ -165,8 +165,10 @@ mt.ISODateString = function(d) {
 
 mt.loadUserPathList = function(pathList) {
         pathItems = [];
+        pathSelectItems = [];
         $.each(pathList, function (key, val) {
             pathItems.push( getPathText(val) );
+            pathSelectItems.push( getSelectItemText(val) );
         });
         $('ul#userlist').empty();
         $('ul#userlist').append( pathItems.join('\n') );
@@ -179,6 +181,11 @@ mt.getPathText = function(path){
                '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>';
 }
 
+mt.getSelectItemText = function(path){
+  var description = path.description;
+  var pathid = path.id;
+  return '<option value="' + pathid + '" >' + description + '</option>';
+}
 
 
 mt.createPath = function(description, createForUser){
