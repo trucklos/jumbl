@@ -36,7 +36,7 @@
 			
 			$('div.button').click(function() {
 				var onclickval = $(this).find('a').attr('onclick');
-  				$(this).find('a').attr('onclick', "");
+  				$(this).find('a').removeAttr('onclick');
   				eval(onclickval);
 			});
 			$('select#pathSelectList').parent('div').css('padding','0');
