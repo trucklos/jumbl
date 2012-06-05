@@ -37,7 +37,10 @@
 			$('div.button').click(function() {
   				eval($(this).find('a').attr('onclick'));
 			});
-			$('div.button select').parent('div').css('padding','0');
+			$('select#pathSelectLis').parent('div').css('padding','0');
+			$('select#pathSelectList').change(function() {
+  				alert('Handler for .change() called.');
+			});
 			
 			MapThing.initMap('map');
 
