@@ -26,7 +26,10 @@
 		userid = null;
 		
 		function submitPathForm(){
-			MapThing.createPath($("#createpathdesc").val(), userid);
+			var createpathdesc = prompt("Enter the title of your new path","My awesome path");
+			if (createpathdesc !== null) {
+				MapThing.createPath(createpathdesc, userid);
+			} 
 		}
 
 		$(document).ready(function() {
@@ -75,15 +78,12 @@
 <div id="body-content">
 	<div id="map" style="height: 400px; width: 100%;"></div>
 	
-  <a href="javascript:void(0)" onclick="MapThing.locate()">Locate on Map</a> | <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()">Drop Point </a> <br />
+  <div>
+  	<div class="button"><a href="javascript:void(0)" onclick="MapThing.locate()" >Locate on Map</a></div>
+  	<div class="button"><a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" >Drop Point</a></div>
+  	<div class="button"><a href="javascript:void(0)" onclick="submitPathForm()" >Create Path</a></div>
+  </div>
 	<div class="info-box">
-		<div id="directions">
-			<strong>Enter an adventure name below and click 'create'.  Double click the map to add points to your adventure.</strong>
-		</div>
-		<form name="pathform" action='javascript:void(0)' onsubmit="submitPathForm()">
-			<input type="text" name="createpathdesc" id="createpathdesc" />
-			<input type="button" name="createpathbutton" id="createpathbutton" value="create" onClick="submitPathForm()" />
-		</form>
 		<ul id="userlist"> 
 			<!--<li>Placeholder</li>-->
 		</ul>
