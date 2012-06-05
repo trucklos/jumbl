@@ -39,9 +39,8 @@
 			});
 			$('select#pathSelectList').parent('div').css('padding','0');
 			$('select#pathSelectList').change(function() {
-				var selectedpathid = $('select#pathSelectList').val();
-				if (selectedpathid !== null) {
-					MapThing.getAndDrawPath(selectedpathid, true, true);
+				if ($('select#pathSelectList').val() !== null) {
+					MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
 				}
 			});
 			
@@ -58,6 +57,7 @@
   					var url = 'django/api/users/'+userid;
   					$.getJSON(url, function(user){
 						MapThing.loadUserPathList(user.paths);
+						MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
 					});
 				}
    			});
