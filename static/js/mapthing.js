@@ -124,7 +124,7 @@ mt.drawPath = function(path, zoom, editable) {
         markers[key].on('dragend', function(e){
           this.point.lat = this._latlng.lat;
           this.point.lon = this._latlng.lng;
-          drawPath(this.path, false, true);
+          mt.drawPath(this.path, false, true);
           $.ajax({type: 'PUT', url: 'django/api/points/'+this.point.id,
                 data: { 'lat': this._latlng.lat , 'lon': this._latlng.lng }
           })
@@ -210,7 +210,7 @@ mt.addPoint = function(lat, lng){
   $.post("django/api/points/", postVars, function(point){
     var newPointKey = currentPath.points.length;
     currentPath.points.push(point);
-    drawPath(currentPath, false, true);
+    mt.drawPath(currentPath, false, true);
     markers[newPointKey].openPopup();
     mt.editPointPopup(newPointKey);
   }).error(function() { alert("could not add point"); } );
