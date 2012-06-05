@@ -35,7 +35,9 @@
 		$(document).ready(function() {
 			
 			$('div.button').click(function() {
-  				eval($(this).find('a').attr('onclick'));
+				var onclickval = $(this).find('a').attr('onclick');
+  				$(this).find('a').attr('onclick', '');
+  				eval(onclickval);
 			});
 			$('select#pathSelectList').parent('div').css('padding','0');
 			$('select#pathSelectList').change(function() {
