@@ -105,10 +105,23 @@ footer#body-footer {
 	margin-bottom: 1em;
 }
 
-/******************** iPhone CSS *********************/
+/******************** Smartphone CSS *********************/
 
-/* iPhone [portrait + landscape] */
-@media only screen and (max-device-width: 480px) {
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+
+	#map {
+		min-height: 600px;
+	}
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+
 	#map {
 		min-height: 600px;
 	}
