@@ -218,7 +218,7 @@ mt.addPoint = function(lat, lng){
 
 mt.shareFromSelect = function() {
 	var pathid = $('select#pathSelectList').val();
-	window.location.replace('share.html?pathid=' + pathid);
+	window.location = 'share.html?pathid=' + pathid;
 }
 
 return mt;

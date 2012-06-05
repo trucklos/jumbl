@@ -19,7 +19,7 @@
 		
 		$.getJSON(token_validator, function(data) {
   			var gid = data['user_id'];
-			window.location.replace("http://mapthing.carlos.ag/?gid=" + gid);
+			window.location = "http://mapthing.carlos.ag/?gid=" + gid;
 		});
 		
 		$(document).ready(function(){
