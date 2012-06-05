@@ -33,6 +33,10 @@
 		}
 
 		$(document).ready(function() {
+			$('div.button').click(function() {
+  				eval($(this).find('a').attr('onclick'));
+			});
+			
 			MapThing.initMap('map');
 
 			var gid = MapThing.getQueryVariable("gid",-1);

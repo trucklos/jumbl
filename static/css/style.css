@@ -13,12 +13,11 @@ body {
 }
 
 div.button {
-	padding: 10px;
 	background: rgba(0, 0, 0, .7);
 	margin-bottom: 1em;
 	margin-right: 10px;
 	float: left;
-	
+	padding: 10px 10px 10px 10px;
 	border: 1px solid black;
 	
 	-webkit-border-radius: 3px;
