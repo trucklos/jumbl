@@ -216,6 +216,11 @@ mt.addPoint = function(lat, lng){
   }).error(function() { alert("could not add point"); } );
 }
 
+mt.shareFromSelect = function() {
+	var pathid = $('select#pathSelectList').val();
+	alert(pathid);
+}
+
 return mt;
 
 }($));
