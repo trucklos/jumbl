@@ -53,11 +53,10 @@
   					var url = 'django/api/users/'+userid;
   					$.getJSON(url, function(user){
 						MapThing.loadUserPathList(user.paths);
+						MapThing.drawSelectedPath();
 					});
 				}
    			});
-   			
-   			MapThing.drawSelectedPath();
 		});
 	</script>
 
