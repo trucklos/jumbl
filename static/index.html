@@ -38,7 +38,12 @@
   				eval($(this).find('a').attr('onclick'));
 			});
 			$('select#pathSelectList').parent('div').css('padding','0');
-			$('select#pathSelectList').change(MapThing.drawSelectedPath());
+			$('select#pathSelectList').change(function() {
+				var selectedpathid = $('select#pathSelectList').val();
+				if (selectedpathid !== null) {
+					mt.getAndDrawPath(selectedpathid, true, true);
+				}
+			});
 			
 			MapThing.initMap('map');
 

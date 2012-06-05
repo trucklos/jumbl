@@ -220,13 +220,6 @@ mt.shareFromSelect = function() {
 	window.location = 'share.html?pathid=' + pathid;
 };
 
-mt.drawSelectedPath = function() {
-	var selectedpathid = $('select#pathSelectList').val();
-	if (selectedpathid !== null) {
-		mt.getAndDrawPath(selectedpathid, true, true);
-	}
-};
-
 return mt;
 
 }($));
