@@ -34,13 +34,15 @@
 
 		$(document).ready(function() {
 			
-			$('div.button').click(function() {
+			<!--
+				$('div.button').click(function() {
 				var onclickval = $(this).find('a').attr('onclick');
   				$(this).find('a').click(function(event) {
   					event.preventDefault();
   				});
   				eval(onclickval);
 			});
+			-->
 			$('select#pathSelectList').parent('div').css('padding','0');
 			$('select#pathSelectList').change(function() {
 				if ($('select#pathSelectList').val() !== null) {
