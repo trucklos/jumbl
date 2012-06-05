@@ -222,7 +222,9 @@ mt.shareFromSelect = function() {
 
 mt.drawSelectedPath = function() {
 	var selectedpathid = $('select#pathSelectList').val();
-	mt.getAndDrawPath(selectedpathid, true, true);
+	if (selectedpathid !== null) {
+		mt.getAndDrawPath(selectedpathid, true, true);
+	}
 };
 
 return mt;
