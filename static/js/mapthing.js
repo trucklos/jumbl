@@ -167,11 +167,11 @@ mt.loadUserPathList = function(pathList) {
         pathItems = [];
         pathSelectItems = [];
         $.each(pathList, function (key, val) {
-            pathItems.push( mt.getPathText(val) );
+            //pathItems.push( mt.getPathText(val) );
             pathSelectItems.push( mt.getSelectItemText(val) );
         });
-        $('ul#userlist').empty();
-        $('ul#userlist').append( pathItems.join('\n') );
+        //$('ul#userlist').empty();
+        //$('ul#userlist').append( pathItems.join('\n') );
         
         $('select#pathSelectList').empty();
         $('select#pathSelectList').append(pathSelectItems.join('\n') );       
