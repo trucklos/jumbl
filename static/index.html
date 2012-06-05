@@ -39,7 +39,8 @@
 			});
 			$('select#pathSelectList').parent('div').css('padding','0');
 			$('select#pathSelectList').change(function() {
-  				alert('Handler for .change() called.');
+  				var selectedpathid = $('select#pathSelectList').val();
+  				MapThing.getAndDrawPath(selectedpathid, true, true);
 			});
 			
 			MapThing.initMap('map');
