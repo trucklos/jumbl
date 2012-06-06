@@ -35,18 +35,22 @@ mt.initMap = function(elementId, locate){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
   currentPath = null;
   currentPathList = [];
-  map = new L.Map(elementId, {'doubleClickZoom':false});
+  map = new L.Map(elementId);
   allPathsLayer = new L.LayerGroup();
+  currentLocationLayer = new L.LayerGroup();
   map.addLayer(allPathsLayer);
-  map.on('dblclick',function(e){
-        if(currentPath !== null){ 
-          mt.addPoint(e.latlng.lat, e.latlng.lng);
-        }
-      });
+  map.addLayer(currentLocationLayer);
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
   map.addLayer(cloudmade);
+
+  map.on('locationfound',function(data){
+      console.log(data.latlng);
+      locationMarker = new L.CircleMarker(data.latlng, {'fillOpacity':1, 'radius':5} );
+      currentLocationLayer.addLayer(locationMarker);
+  });
+
   if(locate){
-    map.locate({setView: true, maxZoom: 13});
+    map.locate({setView: true, enableHighAccuracy:true});
   }else{
     var somervilleLat = 42.3875, somervilleLon = -71.1;
     map.setView(new L.LatLng(somervilleLat, somervilleLon), 12 );
@@ -55,7 +59,7 @@ mt.initMap = function(elementId, locate){
 
 
 mt.locate = function(){
-  map.locate({setView: true});
+  map.locate({setView: true, enableHighAccuracy:true});
 };
 
 mt.dropPointCenter = function(){
