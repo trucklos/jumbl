@@ -98,7 +98,7 @@ header#body-header h1 {
 	
 }
 
-/************************ Map **********************/
+/********************** Footer ********************/
 
 footer#body-footer {
 	margin-top: 1em;
@@ -126,7 +126,7 @@ footer#body-footer {
        only screen and (-webkit-min-device-pixel-ratio: 2) {
 	
 	header#body-header {
-		margin: 0;
+		margin-bottom: 0em;
 	}
 
 	body {
@@ -135,6 +135,7 @@ footer#body-footer {
 	
 	#body-content {
 		width: 100%;
+		margin: 0px;
 	}
 
 	#map {
