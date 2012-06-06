@@ -122,29 +122,19 @@ footer#body-footer {
 /******************** Smartphone CSS *********************/
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-
-	body {
-		background: red;
+@media only screen and (max-device-width: 480px), 
+       only screen and (-webkit-min-device-pixel-ratio: 2) {
+	
+	header#body-header {
+		margin: 0px;
 	}
-
-	#map {
-		min-height: 600px;
-	}
-}
-
-/* iPhone 4 ----------- */
-@media
-only screen and (-webkit-min-device-pixel-ratio : 1.5),
-only screen and (min-device-pixel-ratio : 1.5) {
 
 	body {
 		background: yellow;
 	}
 
 	#map {
-		min-height: 600px;
+		width: 100%;
+		border: none;
 	}
 }
