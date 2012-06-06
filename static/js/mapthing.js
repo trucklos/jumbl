@@ -8,8 +8,7 @@ var allPathsLayer;
 // 
 var currentPath;
 var currentPathList = [];
-
-var markers = []
+var markers = [];
 
 // Current Position
 var userLat = null;
@@ -40,7 +39,7 @@ mt.initMap = function(elementId, locate){
   allPathsLayer = new L.LayerGroup();
   map.addLayer(allPathsLayer);
   map.on('dblclick',function(e){
-        if(currentPath != null){ 
+        if(currentPath !== null){ 
           mt.addPoint(e.latlng.lat, e.latlng.lng);
         }
       });
@@ -57,7 +56,7 @@ mt.initMap = function(elementId, locate){
 
 mt.locate = function(){
   map.locate({setView: true});
-}
+};
 
 mt.dropPointCenter = function(){
   var mid = map.getCenter(); 
@@ -68,7 +67,7 @@ mt.dropPointCenter = function(){
 mt.editPointPopup = function(markerKey){
   var marker = markers[markerKey];
   marker._popup.setContent("<form id='editForm' onsubmit='MapThing.updateDescription("+markerKey+",$(\"#desc\").val());' action='javascript:void(0)'>"+
-    "<input type='text' id='desc' value='"+ (marker.point.description == null ? "" : marker.point.description)+"' />"+
+    "<input type='text' id='desc' value='"+ (marker.point.description === null ? "" : marker.point.description)+"' />"+
     "</form>"+
     "<br/> <a href='javascript:void(0)' onclick='MapThing.deletePoint("+markerKey+")'> delete </a>");
     $('#desc').focus();
@@ -78,7 +77,7 @@ mt.setPointPopup = function(markerKey, editable){
   var editable = typeof(editable) === 'undefined' ? false : editable; 
   var marker = markers[markerKey];
   //if(marker.point.description != null || editable ){
-    marker._popup.setContent( (marker.point.description == null ? " " : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
+    marker._popup.setContent( (marker.point.description === null ? " " : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
   //}else{
     //marker._popup.off();
   //}
@@ -91,7 +90,7 @@ mt.updateDescription = function(pointKey, description){
                 data: { 'description': description }
         });
   mt.setPointPopup(pointKey, true);
-}
+};
 
 mt.deletePoint = function(pointKey){
   var point = currentPath.points[pointKey];
@@ -108,7 +107,7 @@ mt.drawPath = function(path, zoom, editable) {
   var zoom = typeof(zoom) === 'undefined' ? true : zoom; 
   var editable = typeof(zoom) === 'undefined' ? false : editable; 
   allPathsLayer.clearLayers();
-  markers = []
+  markers = [];
   var latlngs = [];
   if (path.points.length > 0) {
     $.each(path.points, function (key, val) {
@@ -118,7 +117,7 @@ mt.drawPath = function(path, zoom, editable) {
       allPathsLayer.addLayer(markers[key]);
       markers[key].bindPopup('');
       markers[key].point = val;
-      markers[key].path = path
+      markers[key].path = path;
 
       if(editable){
         markers[key].on('dragend', function(e){
@@ -127,7 +126,7 @@ mt.drawPath = function(path, zoom, editable) {
           mt.drawPath(this.path, false, true);
           $.ajax({type: 'PUT', url: 'django/api/points/'+this.point.id,
                 data: { 'lat': this._latlng.lat , 'lon': this._latlng.lng }
-          })
+          });
         });
       }
       mt.setPointPopup(key, editable);
@@ -153,14 +152,14 @@ mt.getAndDrawPath = function(pathId, zoom, editable, callback){
 
 mt.ISODateString = function(d) {
     function pad(n){
-        return n<10 ? '0'+n : n
+        return n<10 ? '0'+n : n;
     }
     return d.getUTCFullYear()+'-'
     + pad(d.getUTCMonth()+1)+'-'
     + pad(d.getUTCDate())+'T'
     + pad(d.getUTCHours())+':'
     + pad(d.getUTCMinutes())+':'
-    + pad(d.getUTCSeconds())+'Z'
+    + pad(d.getUTCSeconds())+'Z';
 };
 
 mt.loadUserPathList = function(pathList) {
@@ -182,7 +181,7 @@ mt.getPathText = function(path){
   var pathid = path.id;
   return '<li><a href="javascript:void(0)" onclick="MapThing.getAndDrawPath(\''+pathid+'\', true, true)">' + description + '</a>'+
                '<small> (<a href="share.html?pathid='+pathid+'">share</a></small>) </li>';
-}
+};
 
 mt.getSelectItemText = function(path){
   var description = path.description;
@@ -197,8 +196,8 @@ mt.createPath = function(description, createForUser){
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
     mt.drawPath(currentPath, false);
-    $('select#pathSelectList').append( mt.getSelectItemText(currentPath)) );
-    $('select#pathSelectList').val( mt.getSelectItemText(currentPath) );
+    $('select#pathSelectList').append( mt.getSelectItemText(currentPath));
+    $('select#pathSelectList').val( mt.getSelectItemText(currentPath));
   }).error(function() { alert("Error: Could not add Path. Probably a duplicate description."); } );
 };
 
