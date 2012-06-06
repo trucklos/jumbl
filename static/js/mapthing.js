@@ -196,8 +196,10 @@ mt.createPath = function(description, createForUser){
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
     mt.drawPath(currentPath, false);
-    console.log(currentPath.description);
-    $('select#pathSelectList').append( mt.getSelectItemText(currentPath)).val( currentPath.description );
+    $('select#pathSelectList').append( mt.getSelectItemText(currentPath))
+    $('select#pathSelectList option').attr("selected", false);
+    $('select#pathSelectList option[value="' + currentPath.id + '"]').attr("selected", true);
+    
   }).error(function() { alert("Error: Could not add Path. Probably a duplicate description."); } );
 };
 
