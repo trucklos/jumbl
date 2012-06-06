@@ -191,11 +191,12 @@ mt.getSelectItemText = function(path){
 
 
 mt.createPath = function(description, createForUser){
-  console.log(description);
+  
   console.log(createForUser);
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
     mt.drawPath(currentPath, false);
+    console.log(currentPath.description);
     $('select#pathSelectList').append( mt.getSelectItemText(currentPath)).val( currentPath.description );
   }).error(function() { alert("Error: Could not add Path. Probably a duplicate description."); } );
 };
