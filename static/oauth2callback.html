@@ -1,37 +1,46 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+    
+    <head>
+        <meta charset="utf-8">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
+        type="text/javascript"></script>
+        <script>
+            // First, parse the query string
+            var params = {},
+                queryString = location.hash.substring(1),
+                regex = /([^&=]+)=([^&]*)/g,
+                m;
+            while (m = regex.exec(queryString)) {
+                params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            }
 
-    <title>jQuery demo</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-	<script>
-		
-		// First, parse the query string
-		var params = {}, queryString = location.hash.substring(1),
-    	regex = /([^&=]+)=([^&]*)/g, m;
-		while (m = regex.exec(queryString)) {
-  			params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-		}
+            var token_validator = 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_token'];
 
-		var token_validator = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + params['access_token'];
-		
-		$.getJSON(token_validator, function(data) {
-  			var gid = data['user_id'];
-			window.location = "index.html?gid=" + gid;
-		});
-		
-		$(document).ready(function(){
-       		
-		});
+            $.getJSON(token_validator, function (data) {
+                var gid = data['id'];
 
+                $.getJSON('django/api/fetchbygid/' + gid, function (fetch) {
+                    if (jQuery.isEmptyObject(fetch)) {
+                        var name = data['name'];
+                        var email = data['email'];
+                        var picture = data['picture'];
 
-    </script>
-</head>
-<body>
+                        var registrationMessage = gid + " " + name + " " + email + " " + picture;
 
+                        window.location = "django/registration?gid=" + gid + "&name=" + name + "&email=" + email + "&picture=" + picture;
+                    } else {
+                        window.location = "index.html?gid=" + gid
+                    }
+                });
+            });
 
+            $(document).ready(function () {
 
-</body>
+            });
+        </script>
+    </head>
+    
+    <body></body>
+
 </html>
