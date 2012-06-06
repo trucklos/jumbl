@@ -197,8 +197,9 @@ mt.createPath = function(description, createForUser){
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
     mt.drawPath(currentPath, false);
-    $('ul#userlist').append( getPathText(path) );
-  }).error(function() { alert("could not add path: probably a duplicate description"); } );
+    $('select#pathSelectList').append( mt.getSelectItemText(currentPath)) );
+    $('select#pathSelectList').val( mt.getSelectItemText(currentPath) );
+  }).error(function() { alert("Error: Could not add Path. Probably a duplicate description."); } );
 };
 
 mt.addPoint = function(lat, lng){
