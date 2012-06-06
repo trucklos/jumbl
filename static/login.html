@@ -11,7 +11,7 @@
 		var link = "https://accounts.google.com/o/oauth2/auth?" +
 					"scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
 					"state=%2Fprofile&" + 
-					"redirect_uri=oauth2callback.html&" + 
+					"redirect_uri=" + window.location.hostname + "oauth2callback.html&" + 
 					<!-- "redirect_uri=http%3A%2F%2Fmapthing.carlos.ag%2Foauth2callback.html&" +  -->
 					"response_type=token&" +
 					"client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
