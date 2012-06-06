@@ -44,7 +44,6 @@ mt.initMap = function(elementId, locate){
   map.addLayer(cloudmade);
 
   map.on('locationfound',function(data){
-      console.log(data.latlng);
       locationMarker = new L.CircleMarker(data.latlng, {'fillOpacity':1, 'radius':5} );
       currentLocationLayer.addLayer(locationMarker);
   });
@@ -64,7 +63,6 @@ mt.locate = function(){
 
 mt.dropPointCenter = function(){
   var mid = map.getCenter(); 
-  console.log(mid);
   mt.addPoint(mid.lat, mid.lng);
 };
 
@@ -196,7 +194,6 @@ mt.getSelectItemText = function(path){
 
 mt.createPath = function(description, createForUser){
   
-  console.log(createForUser);
   $.post("django/api/paths/",{'description': description,'user_id': createForUser}, function(path){
     currentPath = path;
     mt.drawPath(currentPath, false);
