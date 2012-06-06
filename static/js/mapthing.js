@@ -197,7 +197,7 @@ mt.createPath = function(description, createForUser){
     currentPath = path;
     mt.drawPath(currentPath, false);
     $('select#pathSelectList').append( mt.getSelectItemText(currentPath));
-    $('select#pathSelectList').val( currentPath.description ));
+    $('select#pathSelectList').val( currentPath.description );
   }).error(function() { alert("Error: Could not add Path. Probably a duplicate description."); } );
 };
 
