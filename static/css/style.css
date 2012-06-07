@@ -203,15 +203,15 @@ div.center-box a#google-login {
 	}
 	
 	#locate-button, #drop-point-button, #create-path-button {
-		width: 31%;
+		width: 20%;
 	}
 	
 	#share-button {
-		width: 25%;
+		width: 15%;
 	}
 	
 	#path-list-button {
-		width: 73%;
+		width: 63%;
 	}
 	
   #crosshairs {
