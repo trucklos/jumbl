@@ -142,7 +142,7 @@ div.center-box p {
 
 div.center-box a#google-login {
 	color: rgba(200, 200, 250, 1.0);
-	text-align: center;
+	margin: 0 auto;
 }
 
 /********************* Crosshairs *******************/
