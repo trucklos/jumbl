@@ -198,7 +198,8 @@ div.center-box a#google-login {
 		margin: 0;
 		padding-left: 0;
 		padding-right: 0;
-		border: 0 0.111% 0 0 solid white;
+		border: 0;
+		border: 0.111% solid white;
 		
 		-webkit-border-radius: 0px;
 		-moz-border-radius: 0px;
