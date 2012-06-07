@@ -196,8 +196,9 @@ div.center-box a#google-login {
 	
 	div.button {
 		margin: 0;
-		padding: 0;
-		border: 0;
+		padding-left: 0;
+		padding-right: 0;
+		border: 0.111% solid white;
 		
 		-webkit-border-radius: 0px;
 		-moz-border-radius: 0px;
