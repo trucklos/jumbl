@@ -198,8 +198,7 @@ div.center-box a#google-login {
 		margin: 0;
 		padding-left: 0;
 		padding-right: 0;
-		border: 0;
-		border: 0.111% solid white;
+		border: 1px solid black;
 		
 		-webkit-border-radius: 0px;
 		-moz-border-radius: 0px;
@@ -208,7 +207,7 @@ div.center-box a#google-login {
 	}
 	
 	#locate-button, #drop-point-button, #create-path-button {
-		width: 33%;
+		width: 32.7083334%;
 	}
 	
 	#share-button {
