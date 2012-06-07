@@ -140,9 +140,12 @@ div.center-box p {
 	margin-bottom: 10px;
 }
 
+div.center-box div.login-link-holder {
+	text-align: center;
+}
+
 div.center-box a#google-login {
 	color: rgba(200, 200, 250, 1.0);
-	margin: 0 auto;
 }
 
 /********************* Crosshairs *******************/
