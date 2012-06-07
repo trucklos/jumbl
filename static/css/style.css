@@ -184,7 +184,7 @@ div.center-box a#google-login {
 
 	#map {
 		width: 100%;
-		height: 300px;
+		height: 250px;
 		border: none;
 		padding: 0;
 		margin: 0px;
@@ -196,6 +196,24 @@ div.center-box a#google-login {
 	
 	div.button {
 		margin: 0;
+		padding: 0;
+		border: 0;
+		
+		-webkit-border-radius: 0px;
+		-moz-border-radius: 0px;
+		border-radius: 0px;
+	}
+	
+	#locate-button, #drop-point-button, #create-path-button {
+		width: 33%;
+	}
+	
+	#share-button {
+		width: 20%;
+	}
+	
+	#path-list-button {
+		width: 80%;
 	}
 	
   #crosshairs {
