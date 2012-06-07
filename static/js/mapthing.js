@@ -44,7 +44,12 @@ mt.initMap = function(elementId, locate){
   map.addLayer(cloudmade);
   var somerville = new L.LatLng(42.3875,-71.1);
   locationMarker = new L.CircleMarker(somerville, {'fillOpacity':.5, 'radius':5} );
+  locationMarker.on('click',function(e){
+    console.log(e);
+    map.setView(e.latlng,16);
+  });
   currentLocationLayer.addLayer(locationMarker);
+
   map.on('locationfound',function(data){
     locationMarker.setLatLng(data.latlng);
   });
