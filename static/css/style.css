@@ -196,6 +196,10 @@ div.center-box a#google-login {
 	
 	div.button {
 		margin: 0;
+		
+		-webkit-border-radius: 0px;
+		-moz-border-radius: 0px;
+		border-radius: 0px;
 	}
 	
   #crosshairs {
