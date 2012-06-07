@@ -34,7 +34,7 @@
     userid = null;
     
     function submitPathForm(){
-      var createpathdesc = prompt("Enter the title of your new path","My awesome path");
+      var createpathdesc = prompt("Enter the title of your new path","My awesome adventure");
       if (createpathdesc !== null) {
         MapThing.createPath(createpathdesc, userid);
       } 
@@ -113,8 +113,7 @@
 
 <div id="body-content">
   <!-- <div id="crosshairs"> </div> -->
-  <div id="map">
-  </div>
+  <div id="map"> </div>
   <div>
       <div id="locate-button" class="button">
       		<a href="javascript:void(0)" onclick="MapThing.locate()" title="Locate your position on the map" >Locate</a>
@@ -123,10 +122,10 @@
       		<a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" title="Drop a new point on the map" >Drop Point</a>
       </div>
       <div id="create-path-button" class="button">
-      		<a href="javascript:void(0)" onclick="submitPathForm()" title="Create a new path" >Create Path</a>
+      		<a href="javascript:void(0)" onclick="submitPathForm()" title="Create a new path" >New Path</a>
       </div>
       <div id="share-button" class="button">
-      		<a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" title="Share the current map" >Share</a>
+      		<a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" title="Share the current map" >View Path</a>
       </div>
       <div class="button">
       	<select id="pathSelectList">
