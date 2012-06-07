@@ -44,7 +44,12 @@ window.addEventListener("load",function() {
 
       var gid = MapThing.getQueryVariable("gid",-1);
       if(gid==-1){
-        $("#body-content").replaceWith("<a href='#' id=\"google-login\"> Login w/ Google </a>");
+        $("#body-content").replaceWith("
+        	<div id=\"body-content\">
+        		<a href='#' id=\"google-login\"> Login w/ Google </a>
+        	</div>
+        ");
+        		
 
           var link = "https://accounts.google.com/o/oauth2/auth?" +
           "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
