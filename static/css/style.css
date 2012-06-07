@@ -202,6 +202,10 @@ div.center-box a#google-login {
 		border-radius: 0px;
 	}
 	
+	#locate-button, #drop-point-button, #create-path-button {
+		width: 33%;
+	}
+	
   #crosshairs {
     position:relative;
     top:160px;
