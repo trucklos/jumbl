@@ -151,8 +151,8 @@ div.center-box a#google-login {
   top:214px; 
   width:23px;  
   margin-left: -11px; 
-  background-image:url('../img/crosshairs.gif'); 
-  background-repeat:no-repeat center center; 
+  /*background-image:url('../img/crosshairs.gif'); 
+  background-repeat:no-repeat center center; */
   left:50%; 
   z-index:100;
 }
