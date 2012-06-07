@@ -122,19 +122,24 @@ footer#body-footer {
 /******************** center-box *******************/
 
 div.center-box {
-	width: 300px;
+	width: 400px;
 	margin: 0 auto;
-	background: rgba(0, 0, 0, .7);
+	background: rgba(0, 0, 0, 0.7);
 	color: white;
+	padding: 10px
 }
 
 div.center-box h1 {
-	font-size: 2em;
+	font-size: 1.5em;
 	font-weight: bold;
 }
 
 div.center-box p {
 	font-size: 1em;
+}
+
+div.center-box a {
+	color: rgba(200, 200, 250, 1.0);
 }
 
 /********************* Crosshairs *******************/
