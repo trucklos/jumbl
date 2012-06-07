@@ -44,11 +44,11 @@ window.addEventListener("load",function() {
 
       var gid = MapThing.getQueryVariable("gid",-1);
       if(gid==-1){
-        $("#body-content").replaceWith("
-        	<div id=\"body-content\">
-        		<a href='#' id=\"google-login\"> Login w/ Google </a>
-        	</div>
-        ");
+        $("#body-content").replaceWith(
+        	"<div id=\"body-content\">" +
+        		"<a href='#' id=\"google-login\"> Login w/ Google </a>" +
+        	"</div>"
+        );
         		
 
           var link = "https://accounts.google.com/o/oauth2/auth?" +
