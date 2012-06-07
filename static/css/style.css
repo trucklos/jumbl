@@ -140,7 +140,7 @@ div.center-box p {
 	margin-bottom: 10px;
 }
 
-div.center-box a.google-login {
+div.center-box a#google-login {
 	color: rgba(200, 200, 250, 1.0);
 	text-align: center;
 }
