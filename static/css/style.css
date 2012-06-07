@@ -182,7 +182,8 @@ div.center-box a#google-login {
 	}
 	
 	div.center-box {
-		width: 90%;
+		margin-top: 10px;
+		width: 80%;
 	}
 
 	#map {
