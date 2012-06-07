@@ -42,17 +42,17 @@ mt.initMap = function(elementId, locate){
   map.addLayer(currentLocationLayer);
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
   map.addLayer(cloudmade);
-
+  var somerville = new L.LatLng(42.3875,-71.1);
+  locationMarker = new L.CircleMarker(somerville, {'fillOpacity':.5, 'radius':5} );
+  currentLocationLayer.addLayer(locationMarker);
   map.on('locationfound',function(data){
-      locationMarker = new L.CircleMarker(data.latlng, {'fillOpacity':1, 'radius':5} );
-      currentLocationLayer.addLayer(locationMarker);
+    locationMarker.setLatLng(data.latlng);
   });
 
   if(locate){
     map.locate({setView: true, enableHighAccuracy:true});
   }else{
-    var somervilleLat = 42.3875, somervilleLon = -71.1;
-    map.setView(new L.LatLng(somervilleLat, somervilleLon), 12 );
+    map.setView(somerville, 12 );
   }
 };
 
