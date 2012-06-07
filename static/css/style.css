@@ -148,11 +148,11 @@ div.center-box a#google-login {
 /********************* Crosshairs *******************/
 #crosshairs {
   position:relative; 
-  top:214px; 
-  width:23px;  
-  margin-left: -11px; 
-  background-image:url('../img/crosshairs.gif'); 
-  background-repeat:no-repeat center center;
+  top:189px; 
+  width:0px; height:0px; 
+  margin-left: -13px; 
+  /* background-image:url('../img/crosshairs.gif'); 
+  background-repeat:no-repeat center center; */
   left:50%; 
   z-index:100;
 }
@@ -220,9 +220,9 @@ div.center-box a#google-login {
 	
   #crosshairs {
     position:relative;
-    top:160px;
-    width:23px;
-    height:20px; 
+    top:118px;
+    /*width:23px;
+    height:20px;*/ width:0px; height:0px; 
     margin-left: -13px; 
     background-image:url('../img/crosshairs.gif'); 
     background-repeat:no-repeat center center;

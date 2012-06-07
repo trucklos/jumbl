@@ -55,7 +55,7 @@ mt.initMap = function(elementId, locate){
   });
 
   if(locate){
-    map.locate({setView: true, enableHighAccuracy:true});
+    mt.locate();
   }else{
     map.setView(somerville, 12 );
   }
@@ -63,7 +63,7 @@ mt.initMap = function(elementId, locate){
 
 
 mt.locate = function(){
-  map.locate({setView: true, enableHighAccuracy:true});
+  map.locate({'setView': true, 'enableHighAccuracy':true, 'maxZoom':20});
 };
 
 mt.dropPointCenter = function(){
