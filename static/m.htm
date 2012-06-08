@@ -10,61 +10,92 @@
         <style>
             /* App custom styles */
         </style>
-        <script src="js/jquery-1.7.2.js">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
         </script>
-        <script src="js/jquery.mobile-1.1.0.min.js">
+        <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
         </script>
+
+<link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+<script src="js/leaflet.js"></script>
+<!-- Leaflet css -->
+  <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
+
+  <!-- <script src="leaflet-0.3.1/leaflet.js"></script> -->
+
     </head>
     <body>
         <div data-role="page" id="page1">
-            <div data-theme="b" data-role="header">
-                <div data-theme="b" data-role="header">
-                </div>
-            </div>
-            <div data-role="content">
-                <div data-role="navbar" data-iconpos="left">
-                    <ul>
-                        <li>
-                            <a href="#page1" data-theme="" data-icon="refresh">
-                                Center
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page1" data-theme="" data-icon="arrow-d">
-                                Point
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page1" data-theme="" data-icon="search">
-                                Venue
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Madison, WI&amp;zoom=14&amp;size=320x200&amp;markers=&amp;sensor=false" width="320" height="200" />
-            </div>
-            <div data-theme="b" data-role="footer" data-position="fixed">
-                <div data-role="navbar" data-iconpos="top">
-                    <ul>
-                        <li>
-                            <a href="#page1" data-theme="c" data-icon="">
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page1" data-theme="c" data-icon="">
-                                New Path
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <h5>
-                    Jumbl.Us
-                </h5>
+<div data-role="header">
+  <div data-role="fieldcontain">
+    <div class="ui-grid-a">
+      <div class="ui-block-a">
+        <select name="select-choice-min" id="path-select" data-mini="true">
+          <option value="path1"> path1 </option>
+          <option value="path1"> path1 </option>
+        </select>
+      </div>
+      <div class="ui-block-b">
+        <a href="index.html" data-role="button" data-icon="plus" mini="true" >New Path</a>
+      </div>
+    </div>
+  </div>
+</div>
+            <article data-role="content" style="margin: 0; padding: 0">
+
+<div id="map" style="width:100%;"> </div>
+
+            </article>
+            <div data-theme="a" data-role="footer" data-position="fixed">
+               <div data-role="controlgroup" data-type="horizontal" style="margin-left:auto; margin-right:auto;">
+                  <a href="#" data-role="button" data-icon="refresh">center</a>
+                  <a href="#" data-role="button" data-icon="plus">drop point</a>
+                  <a href="#" data-role="button" data-icon="arrow-r">view</a>
+jumbl
+               </div> 
             </div>
         </div>
         <script>
-            //App custom javascript
+
+(function() {
+  var demo;
+  demo = {};
+  demo.resizeContentArea = function() {
+    var content, contentHeight, footer, header, viewportHeight;
+//    window.scroll(0, 0);
+    header = $(":jqmData(role='header'):visible");
+    footer = $(":jqmData(role='footer'):visible");
+    content = $(":jqmData(role='content'):visible");
+    viewportHeight = $(window).height();
+    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight();
+    $("article:jqmData(role='content')").first().height(contentHeight);
+    return $("#map").height(contentHeight);
+  };
+  window.demo = demo;
+  $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
+  $(document).bind('pageinit', function() {
+    var attribution, map, tileLayer, tileUrl;
+    tileUrl = 'http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png';
+    tileLayer = new window.L.TileLayer(tileUrl, {
+      maxZoom: 18,
+    });
+    map = new window.L.Map('map');
+    map.addLayer(tileLayer);
+    map.on('locationerror', function(e) {
+      alert(e.message);
+      return map.fitWorld();
+    });
+    return map.locateAndSetView(16);
+  });
+}).call(this);
+
+/*  map = new L.Map('map');
+//  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
+  var cloudmade = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+  map.addLayer(cloudmade);
+  var somerville = new L.LatLng(42.3875,-71.1);
+  map.setView(somerville, 12 );
+*/
         </script>
     </body>
 </html>
