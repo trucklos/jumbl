@@ -31,7 +31,7 @@ mt.getQueryVariable = function(variable, defaultval) {
 };
 
 // public function my.initMap
-mt.initMap = function(elementId, locate){
+mt.initMap = function(elementId, locate, mobile){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
   currentPath = null;
   currentPathList = [];
@@ -59,7 +59,29 @@ mt.initMap = function(elementId, locate){
   }else{
     map.setView(somerville, 12 );
   }
+console.log(mobile);
+if(mobile){
+(function() {
+  var demo;
+  demo = {};
+  demo.resizeContentArea = function() {
+    var content, contentHeight, footer, header, viewportHeight;
+//    window.scroll(0, 0);
+    header = $(":jqmData(role='header'):visible");
+    footer = $(":jqmData(role='footer'):visible");
+    content = $(":jqmData(role='content'):visible");
+    viewportHeight = $(window).height();
+    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight();
+    $("article:jqmData(role='content')").first().height(contentHeight);
+    return $("#map").height(contentHeight);
+  };
+  window.demo = demo;
+  $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
+}).call(this);
+}
+
 };
+
 
 
 mt.locate = function(){

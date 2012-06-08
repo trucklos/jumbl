@@ -17,6 +17,7 @@
 
 <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
 <script src="js/leaflet.js"></script>
+<script src="js/mapthing.js"></script>
 <!-- Leaflet css -->
   <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
 
@@ -29,13 +30,11 @@
   <div data-role="fieldcontain">
     <div class="ui-grid-a">
       <div class="ui-block-a">
-        <select name="select-choice-min" id="path-select" data-mini="true">
-          <option value="path1"> path1 </option>
-          <option value="path1"> path1 </option>
+        <select name="select-choice-min" id="pathSelectList" data-mini="true">
         </select>
       </div>
       <div class="ui-block-b">
-        <a href="index.html" data-role="button" data-icon="plus" mini="true" >New Path</a>
+        <a href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="plus" mini="true" >New Path</a>
       </div>
     </div>
   </div>
@@ -47,56 +46,80 @@
             </article>
             <div data-theme="a" data-role="footer" data-position="fixed">
                <div data-role="controlgroup" data-type="horizontal" style="margin-left:auto; margin-right:auto;">
-                  <a href="#" data-role="button" data-icon="refresh">center</a>
-                  <a href="#" data-role="button" data-icon="plus">drop point</a>
-                  <a href="#" data-role="button" data-icon="arrow-r">view</a>
+                  <a href="javascript:void(0)" onclick="MapThing.locate()" data-role="button" data-icon="refresh">center</a>
+                  <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button" data-icon="plus">drop point</a>
+                  <a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" data-role="button" data-icon="arrow-r">view</a>
 jumbl
                </div> 
             </div>
         </div>
         <script>
+	window.addEventListener("load",function() {
+	    setTimeout(function(){
+	        window.scrollTo(0, 1);
+	    }, 0);
+	});
 
-(function() {
-  var demo;
-  demo = {};
-  demo.resizeContentArea = function() {
-    var content, contentHeight, footer, header, viewportHeight;
-//    window.scroll(0, 0);
-    header = $(":jqmData(role='header'):visible");
-    footer = $(":jqmData(role='footer'):visible");
-    content = $(":jqmData(role='content'):visible");
-    viewportHeight = $(window).height();
-    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight();
-    $("article:jqmData(role='content')").first().height(contentHeight);
-    return $("#map").height(contentHeight);
-  };
-  window.demo = demo;
-  $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
-  $(document).bind('pageinit', function() {
-    var attribution, map, tileLayer, tileUrl;
-    tileUrl = 'http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png';
-    tileLayer = new window.L.TileLayer(tileUrl, {
-      maxZoom: 18,
-    });
-    map = new window.L.Map('map');
-    map.addLayer(tileLayer);
-    map.on('locationerror', function(e) {
-      alert(e.message);
-      return map.fitWorld();
-    });
-    return map.locateAndSetView(16);
+    currentPath = null;
+    userid = null;
+    
+    function submitPathForm(){
+      var createpathdesc = prompt("Enter the title of your new path","My awesome adventure");
+      if (createpathdesc !== null) {
+        MapThing.createPath(createpathdesc, userid);
+      } 
+    }
+
+  $(document).ready(function() {
+
+      var gid = MapThing.getQueryVariable("gid",-1);
+console.log(gid);
+      if(gid==-1){
+        $("#body-content").replaceWith(
+        	"<div id=\"body-content\">" +
+        		"<div class=\"center-box\">" +
+        			"<h1>Welcome to jumbl!</h1>" +
+        			"<p>Click below to request an invite to our closed beta" +
+        			" or login if you've been approved already!</p>" +
+        			"<div class=\"login-link-holder\"><a href='#' id=\"google-login\"> Login w/ Google </a></div>" +
+        		"</div>" +
+        	"</div>"
+        );
+        		
+
+          var link = "https://accounts.google.com/o/oauth2/auth?" +
+          "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
+          "state=%2Fprofile&" + 
+          "redirect_uri=http%3A%2F%2F" + window.location.hostname + "%2Foauth2callback.html&" + 
+          "response_type=token&" +
+          "client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
+          $('a#google-login').attr('href', link);
+
+      }else{
+        $.getJSON('django/api/fetchbygid/' + gid, function(data) {
+          if ( jQuery.isEmptyObject(data) ) {
+            alert("Looks like your not in the database yet");
+          } else {
+            userid = data[0].id;
+            var url = 'django/api/users/'+userid;
+            $.getJSON(url, function(user){
+              MapThing.loadUserPathList(user.paths);
+              MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
+            });
+          }
+        });
+        $('select#pathSelectList').parent('div').css('padding','0');
+        $('select#pathSelectList').change(function() {
+          if ($('select#pathSelectList').val() !== null) {
+            MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
+          }
+        });
+        MapThing.initMap('map',true,true);
+    }
   });
-}).call(this);
 
-/*  map = new L.Map('map');
-//  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
-  var cloudmade = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-
-  map.addLayer(cloudmade);
-  var somerville = new L.LatLng(42.3875,-71.1);
-  map.setView(somerville, 12 );
-*/
         </script>
     </body>
 </html>
+
 
