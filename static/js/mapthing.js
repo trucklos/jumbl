@@ -76,6 +76,9 @@ if(mobile){
   window.demo = demo;
   $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
 }).call(this);
+map.on('dragstart click',function(e){
+window.scrollTo(0, 1);
+});
 }
 
 };
