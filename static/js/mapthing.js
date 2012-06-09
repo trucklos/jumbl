@@ -72,7 +72,7 @@ if(mobile){
   demo = {};
   demo.resizeContentArea = function() {
     var content, contentHeight, iosBuffer, footer, header, viewportHeight;
-//    window.scroll(0, 0);
+    window.scroll(0, 0);
     header = $(":jqmData(role='header'):visible");
     footer = $(":jqmData(role='footer'):visible");
     content = $(":jqmData(role='content'):visible");
