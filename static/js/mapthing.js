@@ -71,14 +71,19 @@ if(mobile){
     viewportHeight = $(window).height();
     contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + 66;
     $("article:jqmData(role='content')").first().height(contentHeight);
+    window.scrollTo(0, 1);
     return $("#map").height(contentHeight);
   };
   window.demo = demo;
   $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
 }).call(this);
-map.on('dragstart click',function(e){
+map.on('dragstart',function(e){
 window.scrollTo(0, 1);
 });
+map.on('click',function(e){
+window.scrollTo(0, 1);
+});
+
 }
 
 };
