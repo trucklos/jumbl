@@ -39,7 +39,7 @@ mt.fixScroll = function(){
 // public function my.initMap
 mt.initMap = function(elementId, locate, mob){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
-  mobile = typeof(mob) === 'undefined' ? false : mob;
+  mobile = typeof(mob) === 'undefined' ? false : true;
 
   currentPath = null;
   currentPathList = [];
