@@ -38,8 +38,8 @@ mt.fixScroll = function(){
 
 // public function my.initMap
 mt.initMap = function(elementId, locate, mob){
-  var locate = typeof(locate) === 'undefined' ? false : locate; 
-  mobile = typeof(mob) === 'undefined' ? false : mobile;
+  var locate = typeof(locate) === 'undefined' ? true : locate; 
+  mobile = typeof(mob) === 'undefined' ? false : mob;
 
   currentPath = null;
   currentPathList = [];
@@ -51,7 +51,6 @@ mt.initMap = function(elementId, locate, mob){
   var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
   map.addLayer(cloudmade);
   var somerville = new L.LatLng(42.3875,-71.1);
-
   locationMarker = new L.CircleMarker(somerville, {'fillOpacity':.5, 'radius':5} );
   locationMarker.on('click',function(e){
     map.setView(e.latlng,16);
@@ -73,6 +72,7 @@ if(mobile){
   demo = {};
   demo.resizeContentArea = function() {
     var content, contentHeight, iosBuffer, footer, header, viewportHeight;
+//    window.scroll(0, 0);
     header = $(":jqmData(role='header'):visible");
     footer = $(":jqmData(role='footer'):visible");
     content = $(":jqmData(role='content'):visible");
@@ -80,7 +80,7 @@ if(mobile){
     if((navigator.userAgent.match(/iPhone/i)) || 
        (navigator.userAgent.match(/iPod/i)) ||
        (navigator.userAgent.match(/iPad/i))){
-      iosBuffer=72;
+      iosBuffer=66;
     }else{
       iosBuffer=0;
     }
