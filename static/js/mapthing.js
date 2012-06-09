@@ -4,6 +4,7 @@ var MapThing = (function ($) {
 // Visual Globals
 var map;
 var allPathsLayer;
+var mobile;
 
 // 
 var currentPath;
@@ -30,9 +31,16 @@ mt.getQueryVariable = function(variable, defaultval) {
   return defaultval;
 };
 
+mt.fixScroll = function(){
+  if(mobile)
+    window.scrollTo(0, 1);
+}
+
 // public function my.initMap
-mt.initMap = function(elementId, locate, mobile){
+mt.initMap = function(elementId, locate, mob){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
+  mobile = typeof(mob) === 'undefined' ? false : true;
+
   currentPath = null;
   currentPathList = [];
   map = new L.Map(elementId);
@@ -63,13 +71,22 @@ if(mobile){
   var demo;
   demo = {};
   demo.resizeContentArea = function() {
-    var content, contentHeight, footer, header, viewportHeight;
+    var content, contentHeight, iosBuffer, footer, header, viewportHeight;
 //    window.scroll(0, 0);
     header = $(":jqmData(role='header'):visible");
     footer = $(":jqmData(role='footer'):visible");
     content = $(":jqmData(role='content'):visible");
+
+    if((navigator.userAgent.match(/iPhone/i)) || 
+       (navigator.userAgent.match(/iPod/i)) ||
+       (navigator.userAgent.match(/iPad/i))){
+      iosBuffer=66;
+    }else{
+      iosBuffer=0;
+    }
+
     viewportHeight = $(window).height();
-    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + 66;
+    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + iosBuffer;
     $("article:jqmData(role='content')").first().height(contentHeight);
     window.scrollTo(0, 1);
     return $("#map").height(contentHeight);
@@ -77,12 +94,8 @@ if(mobile){
   window.demo = demo;
   $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
 }).call(this);
-map.on('dragstart',function(e){
-window.scrollTo(0, 1);
-});
-map.on('click',function(e){
-window.scrollTo(0, 1);
-});
+map.on('dragstart', mt.fixScroll);
+map.on('click', mt.fixScroll);
 
 }
 
@@ -209,6 +222,10 @@ mt.loadUserPathList = function(pathList) {
         
         $('select#pathSelectList').empty();
         $('select#pathSelectList').append(pathSelectItems.join('\n') );       
+
+        if(mobile){
+          $('select#pathSelectList').trigger("change");
+        }
 };
 
 mt.getPathText = function(path){
@@ -233,7 +250,8 @@ mt.createPath = function(description, createForUser){
     $('select#pathSelectList').append( mt.getSelectItemText(currentPath))
     $('select#pathSelectList option').attr("selected", false);
     $('select#pathSelectList option[value="' + currentPath.id + '"]').attr("selected", true);
-    
+    if(mobile)
+      $('select#pathSelectList').trigger('change');
   }).error(function() { alert("Error: Could not add Path. Probably a duplicate description."); } );
 };
 

@@ -3,16 +3,17 @@
 <!--
 TODO:
 bugs
-- adding a point makes the bottom bar disapear
 - refresh doesn't work
-- path dropdown doesn't populate
-- path dropdown can be too long
-- on map click goto zero zoom
-- fix content height hack
+- when really long path name comes up and you use landscape mode, layout gets messed up.
+X adding a point makes the bottom bar disapear
+X path dropdown doesn't populate
+X path dropdown can be too long
+X on map click goto zero zoom
+X fix content height hack
 
 nice to haves
-- no branding
-- bad icons
+X no branding
+/ bad icons
 - no crosshairs
 
 -->
@@ -31,29 +32,28 @@ nice to haves
         <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
         </script>
 
-<link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
-<script src="leaflet-0.3.1/leaflet.js"></script>
-<script src="js/mapthing.js"></script>
-<!-- Leaflet css -->
-  <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
-
-  <!-- <script src="leaflet-0.3.1/leaflet.js"></script> -->
+      <script src="leaflet-0.3.1/leaflet.js"></script>
+      <script src="js/mapthing.js"></script>
+      <link rel="stylesheet" href="css/leaflet.css">
+      <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
 
     </head>
     <body>
         <div data-role="page" id="page1">
 <div data-role="header">
-  <div data-role="fieldcontain" style="margin:0; padding:5px; padding-left:10px;">
-    <div class="ui-grid-a">
-      <div class="ui-block-a" style="width:150px">
-      <h1>jumbl</h1>
+  <!-- div data-role="fieldcontain"  -->
+    <div class="ui-grid-a" style="margin:0; padding:5px; padding-left:10px; width:100%" >
+      <div class="ui-block-a" style="width:25%">
+        <h1>jumbl</h1>
       </div>
-      <div class="ui-block-b" style="text-align:right">
-        <select name="select-choice-min" id="pathSelectList" data-mini="true">
-        </select>
+      <div class="ui-block-b" style="text-align:right; width:75%;">
+        <div id="selectContainer" style="padding-right:15px">
+          <select name="select-choice-min" id="pathSelectList" data-mini="true">
+          </select>
+        </div>
       </div>
     </div>
-  </div>
+  <!-- /div -->
 </div>
             <article data-role="content" style="margin: 0; padding: 0">
 
@@ -128,8 +128,10 @@ console.log(gid);
         $('select#pathSelectList').change(function() {
           if ($('select#pathSelectList').val() !== null) {
             MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
+            MapThing.fixScroll();
           }
         });
+        $('select#pathSelectList').blur(MapThing.fixScroll);
         MapThing.initMap('map',true,true);
     }
   });
