@@ -21,6 +21,7 @@ nice to haves
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <!-- not ready for this, but this will make it a real web app: meta name="apple-mobile-web-app-capable" content="yes" / -->
         <title>jumbl</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
         <link rel="stylesheet" href="css/m.css" />
@@ -42,14 +43,14 @@ nice to haves
     <body>
         <div data-role="page" id="page1">
 <div data-role="header">
-  <div data-role="fieldcontain" style="margin:0; padding:0;">
+  <div data-role="fieldcontain" style="margin:0; padding:5px; padding-left:10px;">
     <div class="ui-grid-a">
-      <div class="ui-block-a">
-        <select name="select-choice-min" id="pathSelectList" data-mini="true">
-        </select>
+      <div class="ui-block-a" style="width:150px">
+      <h1>jumbl</h1>
       </div>
       <div class="ui-block-b" style="text-align:right">
-        <a href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="plus" mini="true" >New Path</a>
+        <select name="select-choice-min" id="pathSelectList" data-mini="true">
+        </select>
       </div>
     </div>
   </div>
@@ -62,9 +63,9 @@ nice to haves
             <div data-theme="a" data-role="footer">
                <div data-role="controlgroup" data-type="horizontal" style="text-align:center">
                   <a href="javascript:void(0)" onclick="MapThing.locate()" data-role="button" data-icon="refresh">center</a>
-                  <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button" data-icon="plus">drop point</a>
-                  <a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" data-role="button" data-icon="arrow-r">view</a>
-
+                  <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button"><img src="img/location2.png" width="19" height="28" /></a>
+                  <a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" data-role="button" data-icon="arrow-r">share</a>
+                  <a href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="plus" mini="true">new</a>
                </div> 
             </div>
         </div>
@@ -79,7 +80,7 @@ nice to haves
     userid = null;
     
     function submitPathForm(){
-      var createpathdesc = prompt("Enter the title of your new path","My awesome adventure");
+      var createpathdesc = prompt("Path name:","");
       if (createpathdesc !== null) {
         MapThing.createPath(createpathdesc, userid);
       } 
