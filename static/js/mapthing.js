@@ -45,7 +45,6 @@ mt.initMap = function(elementId, locate, mobile){
   var somerville = new L.LatLng(42.3875,-71.1);
   locationMarker = new L.CircleMarker(somerville, {'fillOpacity':.5, 'radius':5} );
   locationMarker.on('click',function(e){
-    console.log(e);
     map.setView(e.latlng,16);
   });
   currentLocationLayer.addLayer(locationMarker);
@@ -59,7 +58,6 @@ mt.initMap = function(elementId, locate, mobile){
   }else{
     map.setView(somerville, 12 );
   }
-console.log(mobile);
 if(mobile){
 (function() {
   var demo;
@@ -71,7 +69,7 @@ if(mobile){
     footer = $(":jqmData(role='footer'):visible");
     content = $(":jqmData(role='content'):visible");
     viewportHeight = $(window).height();
-    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight();
+    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + 66;
     $("article:jqmData(role='content')").first().height(contentHeight);
     return $("#map").height(contentHeight);
   };

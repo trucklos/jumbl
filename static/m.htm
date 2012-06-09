@@ -2,23 +2,25 @@
 
 <!--
 TODO:
-- fix markers not working
-- fix map height
-- fix top bar
+- path dropdown doesn't populate
+- path dropdown can be too long
+- on map click goto zero zoom
+- refresh doesn't work
+- fix content height hack
+- no branding
+- bad icons
+- no crosshairs
 
 -->
 
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>
-        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <title>jumbl</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
         <link rel="stylesheet" href="css/m.css" />
-        <style>
-            /* App custom styles */
-        </style>
+        <link href='http://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
         </script>
         <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
@@ -36,13 +38,13 @@ TODO:
     <body>
         <div data-role="page" id="page1">
 <div data-role="header">
-  <div data-role="fieldcontain">
+  <div data-role="fieldcontain" style="margin:0; padding:0;">
     <div class="ui-grid-a">
       <div class="ui-block-a">
         <select name="select-choice-min" id="pathSelectList" data-mini="true">
         </select>
       </div>
-      <div class="ui-block-b">
+      <div class="ui-block-b" style="text-align:right">
         <a href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="plus" mini="true" >New Path</a>
       </div>
     </div>
@@ -54,11 +56,11 @@ TODO:
 
             </article>
             <div data-theme="a" data-role="footer" data-position="fixed">
-               <div data-role="controlgroup" data-type="horizontal" style="margin-left:auto; margin-right:auto;">
+               <div data-role="controlgroup" data-type="horizontal" style="text-align:center">
                   <a href="javascript:void(0)" onclick="MapThing.locate()" data-role="button" data-icon="refresh">center</a>
                   <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button" data-icon="plus">drop point</a>
                   <a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" data-role="button" data-icon="arrow-r">view</a>
-jumbl
+
                </div> 
             </div>
         </div>

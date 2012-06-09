@@ -4,3 +4,14 @@
 .text-align-right {
   text-align: right;
 }
+
+h1 {
+  color: rgba(250, 250, 75, 1.0);
+  font-size: 2.5em;
+  font-weight: bold;
+  font-family: 'Fredoka One', cursive;
+
+  -webkit-text-shadow: 0px 2px 3px black;
+  -moz-text-shadow: 0px 2px 3px black;
+  text-shadow: 0px 2px 3px black;
+}
