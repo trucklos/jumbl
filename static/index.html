@@ -6,19 +6,31 @@
   <title>jumbl</title>
 
   <link type="text/css" rel="stylesheet" href="css/reset.css">
-    <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" href="css/custom-theme/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
     
-    <!-- Google web fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'>
+  <!-- Google web fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'>
     
-    <!--[if lt IE 9]> <script src="js/html5shiv.js"></script> <![endif]-->
+  <!--[if lt IE 9]> <script src="js/html5shiv.js"></script> <![endif]-->
 
   <!-- Leaflet css -->
   <link rel="stylesheet" href="leaflet-0.3.1/leaflet.css">
   <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
 
   <script src="leaflet-0.3.1/leaflet.js"></script>
+  
   <script src="js/jquery-1.7.2.js"></script>
+  <!-- <script src="js/jquery-ui-1.8.21.custom.min.js"></script> -->
+  
+  <script src="js/jquery-ui-1.9/jquery.ui.core.js"></script>
+  <script src="js/jquery-ui-1.9/jquery.ui.widget.js"></script>
+  <script src="js/jquery-ui-1.9/jquery.ui.position.js"></script>
+  <script src="js/jquery-ui-1.9/jquery.ui.menu.js"></script>
+  <script src="js/jquery-ui-1.9/jquery.ui.selectmenu.js"></script>
+  <script src="js/jquery-ui-1.9/jquery.ui.button.js"></script>
+  
+  
   <script src="js/mapthing.js"></script>
 
   <script>    
@@ -45,25 +57,39 @@
       if(gid==-1){
         $("#body-content").replaceWith(
         	"<div id=\"body-content\">" +
-        		"<div class=\"center-box\">" +
+        		"<div class=\"center-box ui-widget ui-widget-content ui-corner-all\">" +
         			"<h1>Welcome to jumbl!</h1>" +
-        			"<p>Click below to request an invite to our closed beta" +
-        			" or login if you've been approved already!</p>" +
-        			"<div class=\"login-link-holder\"><a href='#' id=\"google-login\"> Login w/ Google </a></div>" +
+              		<!-- "<div class=\"login-link-holder\"><a href='#' id=\"google-login\"> Login w/ Google </a></div>" + -->    			
+    				"<p>Click below to request an invite to our closed beta.<p>" +
+    				"<div class=\"horizontal-align\"><button id=\"jQuery-request-invite-button\">Request An Invite</button></div>" +
+    				"<p>Login if you're already registered.</p>" +
+    				"<div class=\"horizontal-align\"><button id=\"jQuery-login-button\">Login with Google</button></div>" +
         		"</div>" +
         	"</div>"
         );
-        		
-
-          var link = "https://accounts.google.com/o/oauth2/auth?" +
+        
+        var link = "https://accounts.google.com/o/oauth2/auth?" +
           "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
           "state=%2Fprofile&" + 
           "redirect_uri=http%3A%2F%2F" + window.location.hostname + "%2Foauth2callback.html&" + 
           "response_type=token&" +
           "client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
           $('a#google-login').attr('href', link);
+        
+        
+		$('button#jQuery-login-button').click(function() { window.location = link; });
+		$('button#jQuery-request-invite-button').click(function() { window.location = link; });
+        $('button').button();
 
-      }else{
+      } else {
+      
+      	$('button#jQuery-locate-button').button({ icons: { primary: "ui-icon-home" } }).click(function() { MapThing.locate() });
+      	$('button#jQuery-drop-point-button').button({ icons: { primary: "ui-icon-pin-s" } }).click(function() { MapThing.dropPointCenter() });
+      	$('button#jQuery-new-path-button').button({ icons: { primary: "ui-icon-plusthick" } }).click(function() { submitPathForm() });
+      	$('button#jQuery-view-path-button').button({ icons: { primary: "ui-icon-image" } }).click(function() { MapThing.shareFromSelect() });
+      	$('select#jQuery-path-select-list').selectmenu();
+      	$('button').button();
+      
         $.getJSON('django/api/fetchbygid/' + gid, function(data) {
           if ( jQuery.isEmptyObject(data) ) {
             alert("Looks like your not in the database yet");
@@ -84,6 +110,7 @@
         });
         MapThing.initMap('map');
     }
+    
   });
   </script>
 
@@ -114,22 +141,32 @@
   <div id="crosshairs"><img src='img/crosshairs.gif' /></div>
   <div id="map"> </div>
   <div>
-      <div id="locate-button" class="button">
-      		<a href="javascript:void(0)" onclick="MapThing.locate()" title="Locate your position on the map" >Locate</a>
+  	  <div>
+	      <div id="locate-button" class="button">
+	      		<a href="javascript:void(0)" onclick="MapThing.locate()" title="Locate your position on the map" >Locate</a>
+	      </div>
+	      <div id="drop-point-button" class="button">
+	      		<a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" title="Drop a new point on the map" >Drop Point</a>
+	      </div>
+	      <div id="create-path-button" class="button">
+	      		<a href="javascript:void(0)" onclick="submitPathForm()" title="Create a new path" >New Path</a>
+	      </div>
+	      <div id="share-button" class="button">
+	      		<a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" title="Share the current map" >View Path</a>
+	      </div>
+	      <div id="path-list-button" class="button">
+	      	<select id="pathSelectList">
+	        
+	      	</select>
+	      </div>
       </div>
-      <div id="drop-point-button" class="button">
-      		<a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" title="Drop a new point on the map" >Drop Point</a>
-      </div>
-      <div id="create-path-button" class="button">
-      		<a href="javascript:void(0)" onclick="submitPathForm()" title="Create a new path" >New Path</a>
-      </div>
-      <div id="share-button" class="button">
-      		<a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" title="Share the current map" >View Path</a>
-      </div>
-      <div id="path-list-button" class="button">
-      	<select id="pathSelectList">
-        
-      	</select>
+      
+      <div style="clear:both;">
+      	<button id="jQuery-locate-button">Locate</button>
+      	<button id="jQuery-drop-point-button">Drop Point</button>
+      	<button id="jQuery-new-path-button">New Path</button>
+      	<button id="jQuery-view-path-button">View Path</button>
+      	<select id="jQuery-path-select-list" name="path-list"></select>
       </div>
   </div>
   <!--

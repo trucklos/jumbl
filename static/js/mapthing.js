@@ -227,7 +227,11 @@ mt.loadUserPathList = function(pathList) {
         //$('ul#userlist').append( pathItems.join('\n') );
         
         $('select#pathSelectList').empty();
-        $('select#pathSelectList').append(pathSelectItems.join('\n') );       
+        $('select#jQuery-path-select-list').empty();
+        
+        $('select#pathSelectList').append(pathSelectItems.join('\n') ); 
+        $('select#jQuery-path-select-list').append(pathSelectItems.join('\n') );
+        $('select#jQuery-path-select-list option').first().attr("selected", true);   
 
         if(mobile){
           $('select#pathSelectList').trigger("change");
