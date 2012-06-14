@@ -303,10 +303,10 @@ fs.search = function(query){
     $.each(d, function(key, val){
       console.log(val);
       newContent.push("<li> <a href=\"javascript:void(0)\" onclick=\"MapThing.addPoint("+val.location.lat+","+val.location.lng+"); window.history.back();\">"+val.name+"<br/>"+
-      "<div style='color:#BBB;size=-1'>"+
+      "<div style='color:#BBB;font-size:small;'>"+
         (typeof(val.location.address)==='undefined'?"":val.location.address+", ")+
         (typeof(val.location.city)==='undefined'?"":val.location.city)+
-        (typeof(val.location.distance)==='undefined'?"": "<br/> "+String(Math.round(val.location.distance/1609.344*10)/10)+" mi away"  )+
+        (typeof(val.location.distance)==='undefined'?"": "<br/><p class='ui-li-aside'> "+String(Math.round(val.location.distance/1609.344*10)/10)+" mi</p>"  )+
       "</div> </a> </li>");
     });
     $("ul#venue-list").html(newContent.join('\n'));

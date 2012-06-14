@@ -51,15 +51,18 @@
         </div><!-- page -->
 
         <div data-role="page" id="foursquare-search"> 
-          <div data-role="header"> 
-            <form name="foursquare-search" action="javascript:void(0)" onSubmit="FourSquare.search($('#search-basic').val())"> 
+          <div data-role="header">
+            <h1>Search Venues</h1>
+            <a href="javascript:void(0)" data-role="button" data-rel="back">back</a>
+            <form name="foursquare-search" action="javascript:void(0)" onSubmit="FourSquare.search($('#search-basic').val()); $('input#search-basic').blur();"> 
               <input type="search" name="search" id="search-basic" value="" data-mini="true" /> 
             </form>
+            <div id="attribution-container" style="text-align:center">
+              <img src="img/fsq.png" style="margin:0; padding:0; width:320px; height:28px;"/>
+            </div>
           </div> 
-          <div data-role="content"> 
-            <a href="javascript:void(0)" data-role="button" data-rel="back">cancel</a>
+          <div data-role="content" >
             <ul id="venue-list" data-role="listview" data-theme="d" data-divider-theme="d" > 
-              <li data-role="list-divider">nearby</li> 
             </ul> 
           </div> 
         </div>
