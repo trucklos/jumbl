@@ -7,13 +7,13 @@ var allPathsLayer;
 var mobile;
 
 // 
-var currentPath;
+var currentPath = null;
 var currentPathList = [];
 var markers = [];
 
 // Current Position
 var userLat = null;
-var userLong = null;
+var userLon = null;
 
 // module variable
 var mt = {};
@@ -34,83 +34,89 @@ mt.getQueryVariable = function(variable, defaultval) {
 mt.fixScroll = function(){
   if(mobile)
     window.scrollTo(0, 1);
-}
+};
+
+mt.resizeContentArea = function() {
+      var content, contentHeight, iosBuffer, footer, header, viewportHeight;
+      header = $(":jqmData(role='header'):visible");
+      footer = $(":jqmData(role='footer'):visible");
+      content = $(":jqmData(role='content'):visible");
+      if((navigator.userAgent.match(/iPhone/i)) || 
+        (navigator.userAgent.match(/iPod/i)) ||
+        (navigator.userAgent.match(/iPad/i))){
+        iosBuffer=66;
+      }else{
+        iosBuffer=0;
+      }
+
+      mt.fixScroll();
+
+      viewportHeight = $(window).height();
+      contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + iosBuffer;
+      $("div#map").first().height(contentHeight);
+      return $("#map").height(contentHeight);
+};
 
 // public function my.initMap
 mt.initMap = function(elementId, locate, mob){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
-  mobile = typeof(mob) === 'undefined' ? false : true;
+  mobile = typeof(mob) === 'undefined' ? false : mob;
 
-  currentPath = null;
-  currentPathList = [];
   map = new L.Map(elementId);
+  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
+  map.addLayer(cloudmade);
+
   allPathsLayer = new L.LayerGroup();
   currentLocationLayer = new L.LayerGroup();
   map.addLayer(allPathsLayer);
   map.addLayer(currentLocationLayer);
-  var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/7ed9bab0587c49f79a34e6c987ed60fb/997/256/{z}/{x}/{y}.png');
-  map.addLayer(cloudmade);
+
   var somerville = new L.LatLng(42.3875,-71.1);
   locationMarker = new L.CircleMarker(somerville, {'fillOpacity':.5, 'radius':5} );
   locationMarker.on('click',function(e){
-    map.setView(e.latlng,16);
+    map.setView(e.latlng);
   });
   currentLocationLayer.addLayer(locationMarker);
 
   map.on('locationfound',function(data){
+    userLat = data.latlng.lat;
+    userLon = data.latlng.lng;
     locationMarker.setLatLng(data.latlng);
   });
+  map.on('dragstart', mt.fixScroll);
+  map.on('click', mt.fixScroll);
 
   if(locate){
     mt.locate();
-  }else{
-    map.setView(somerville, 12 );
   }
-if(mobile){
-(function() {
-  var demo;
-  demo = {};
-  demo.resizeContentArea = function() {
-    var content, contentHeight, iosBuffer, footer, header, viewportHeight;
-    window.scroll(0, 0);
-    header = $(":jqmData(role='header'):visible");
-    footer = $(":jqmData(role='footer'):visible");
-    content = $(":jqmData(role='content'):visible");
 
-    if((navigator.userAgent.match(/iPhone/i)) || 
-       (navigator.userAgent.match(/iPod/i)) ||
-       (navigator.userAgent.match(/iPad/i))){
-      iosBuffer=66;
-    }else{
-      iosBuffer=0;
-    }
-
-    viewportHeight = $(window).height();
-    contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + iosBuffer;
-    $("article:jqmData(role='content')").first().height(contentHeight);
-    window.scrollTo(0, 1);
-    return $("#map").height(contentHeight);
-  };
-  window.demo = demo;
-  $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
-}).call(this);
-map.on('dragstart', mt.fixScroll);
-map.on('click', mt.fixScroll);
-
-}
+  if(mobile){
+    var demo;
+    $(window).bind('orientationchange pageshow resize pageinit', mt.resizeContentArea);
+  }
 
 };
 
 
-
-mt.locate = function(){
-  map.locate({'setView': true, 'enableHighAccuracy':true, 'maxZoom':20});
+mt.locate = function(zoom){
+  var zoom = typeof(zoom) === 'undefined' ? true : zoom;
+  map.locate({'setView': zoom, 'enableHighAccuracy':true, 'maxZoom':20});
 };
 
 mt.dropPointCenter = function(){
   var mid = map.getCenter(); 
   mt.addPoint(mid.lat, mid.lng);
 };
+
+mt.getLocation = function(){
+  if(userLat != null){
+    return [userLat, userLon];
+  }else{
+    var mid;
+    mid = map.getCenter();
+    return [mid.lat, mid.lng];
+  }
+}
 
 mt.editPointPopup = function(markerKey){
   var marker = markers[markerKey];
@@ -277,3 +283,37 @@ mt.shareFromSelect = function() {
 return mt;
 
 }($));
+
+var FourSquare = (function(MapThing){
+
+var fs = {};
+
+fs.request = function(lat, lon, query, callback){
+  var query = typeof(query) === 'undefined' ? "" : query;
+  var searchString="https://api.foursquare.com/v2/venues/search?client_id=QTVZ0RMVUR3GEO30XJTKAWT02XMEQINHOH2FAEUFM42CZWMU&client_secret=4UAF15NQOUJKN1MJYOLY4U0PNWW1MLYLLSM0VYWYTRI4XF2X&ll={lat},{lon}&query={query}";  
+  searchString = searchString.replace("{lat}",String(lat)).replace("{lon}",String(lon)).replace("{query}",query);
+  $.ajax({"url":searchString}).done(function (data){ callback(data.response.groups[0].items);
+  });
+}
+
+fs.search = function(query){
+  var center = MapThing.getLocation();
+  fs.request(center[0], center[1], query, function(d){
+    var newContent = [];
+    $.each(d, function(key, val){
+      console.log(val);
+      newContent.push("<li> <a href=\"javascript:void(0)\" onclick=\"MapThing.addPoint("+val.location.lat+","+val.location.lng+"); window.history.back();\">"+val.name+"<br/>"+
+      "<div style='color:#BBB;size=-1'>"+
+        (typeof(val.location.address)==='undefined'?"":val.location.address+", ")+
+        (typeof(val.location.city)==='undefined'?"":val.location.city)+
+        (typeof(val.location.distance)==='undefined'?"": "<br/> "+String(Math.round(val.location.distance/1609.344*10)/10)+" mi away"  )+
+      "</div> </a> </li>");
+    });
+    $("ul#venue-list").html(newContent.join('\n'));
+    $("ul#venue-list").listview("refresh");
+  });
+}
+
+return fs;
+
+}(MapThing));

@@ -1,23 +1,4 @@
 <!DOCTYPE html>
-
-<!--
-TODO:
-bugs
-- refresh doesn't work
-- when really long path name comes up and you use landscape mode, layout gets messed up.
-X adding a point makes the bottom bar disapear
-X path dropdown doesn't populate
-X path dropdown can be too long
-X on map click goto zero zoom
-X fix content height hack
-
-nice to haves
-X no branding
-/ bad icons
-- no crosshairs
-
--->
-
 <html>
     <head>
         <meta charset="utf-8" />
@@ -39,7 +20,7 @@ X no branding
 
     </head>
     <body>
-        <div data-role="page" id="page1">
+        <div data-role="page" id="main-page">
 <div data-role="header">
   <!-- div data-role="fieldcontain"  -->
     <div class="ui-grid-a" style="margin:0; padding:5px; padding-left:10px;" >
@@ -56,19 +37,33 @@ X no branding
   <!-- /div -->
 </div>
             <article data-role="content" style="margin: 0; padding: 0">
-
-<div id="map" style="width:100%;"> </div>
-
+              <div id="map" style="width:100%;height:300px;margin:0; padding:0;"> </div>
             </article>
             <div data-theme="a" data-role="footer">
                <div data-role="controlgroup" data-type="horizontal" style="text-align:center">
                   <a href="javascript:void(0)" onclick="MapThing.locate()" data-role="button" data-icon="refresh">center</a>
-                  <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button"><img src="img/location2.png" width="19" height="28" /></a>
+                  <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button"><img src="img/location2.png" width="13" height="19" /></a>
+                  <a href="javascript:void(0)" onclick='foursquareSearch();' data-role="button" data-icon="search">s</a>
                   <a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" data-role="button" data-icon="arrow-r">share</a>
-                  <a href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="plus" mini="true">new</a>
-               </div> 
-            </div>
+                  <a href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="plus" mini="true"a>new</a>
+               </div> <!-- footer -->
+            </div> <!-- buttons -->
+        </div><!-- page -->
+
+        <div data-role="page" id="foursquare-search"> 
+          <div data-role="header"> 
+            <form name="foursquare-search" action="javascript:void(0)" onSubmit="FourSquare.search($('#search-basic').val())"> 
+              <input type="search" name="search" id="search-basic" value="" data-mini="true" /> 
+            </form>
+          </div> 
+          <div data-role="content"> 
+            <a href="javascript:void(0)" data-role="button" data-rel="back">cancel</a>
+            <ul id="venue-list" data-role="listview" data-theme="d" data-divider-theme="d" > 
+              <li data-role="list-divider">nearby</li> 
+            </ul> 
+          </div> 
         </div>
+
         <script>
 	window.addEventListener("load",function() {
 	    setTimeout(function(){
@@ -78,7 +73,10 @@ X no branding
 
     currentPath = null;
     userid = null;
-    
+    function foursquareSearch(){
+      $.mobile.changePage($("#foursquare-search"),{transition:'slide'});
+      FourSquare.search();
+    }
     function submitPathForm(){
       var createpathdesc = prompt("Path name:","");
       if (createpathdesc !== null) {
@@ -86,10 +84,9 @@ X no branding
       } 
     }
 
-  $(document).ready(function() {
 
+  $(document).ready(function() {
       var gid = MapThing.getQueryVariable("gid",-1);
-console.log(gid);
       if(gid==-1){
         $("#body-content").replaceWith(
         	"<div id=\"body-content\">" +
@@ -112,6 +109,7 @@ console.log(gid);
           $('a#google-login').attr('href', link);
 
       }else{
+        MapThing.initMap('map',true,true);
         $.getJSON('django/api/fetchbygid/' + gid, function(data) {
           if ( jQuery.isEmptyObject(data) ) {
             alert("Looks like your not in the database yet");
@@ -124,6 +122,7 @@ console.log(gid);
             });
           }
         });
+
         $('select#pathSelectList').parent('div').css('padding','0');
         $('select#pathSelectList').change(function() {
           if ($('select#pathSelectList').val() !== null) {
@@ -132,12 +131,10 @@ console.log(gid);
           }
         });
         $('select#pathSelectList').blur(MapThing.fixScroll);
-        MapThing.initMap('map',true,true);
     }
   });
 
         </script>
     </body>
 </html>
-
 
