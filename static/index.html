@@ -6,12 +6,13 @@
   <title>jumbl</title>
 
   <link type="text/css" rel="stylesheet" href="css/reset.css">
-    <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" href="css/custom-theme/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
     
-    <!-- Google web fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'>
+  <!-- Google web fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'>
     
-    <!--[if lt IE 9]> <script src="js/html5shiv.js"></script> <![endif]-->
+  <!--[if lt IE 9]> <script src="js/html5shiv.js"></script> <![endif]-->
 
   <!-- Leaflet css -->
   <link rel="stylesheet" href="leaflet-0.3.1/leaflet.css">
@@ -19,6 +20,7 @@
 
   <script src="leaflet-0.3.1/leaflet.js"></script>
   <script src="js/jquery-1.7.2.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>
   <script src="js/mapthing.js"></script>
 
   <script>    
@@ -45,25 +47,33 @@
       if(gid==-1){
         $("#body-content").replaceWith(
         	"<div id=\"body-content\">" +
-        		"<div class=\"center-box\">" +
+        		"<div class=\"center-box ui-widget ui-widget-content ui-corner-all\">" +
         			"<h1>Welcome to jumbl!</h1>" +
-        			"<p>Click below to request an invite to our closed beta" +
-        			" or login if you've been approved already!</p>" +
-        			"<div class=\"login-link-holder\"><a href='#' id=\"google-login\"> Login w/ Google </a></div>" +
+              		<!-- "<div class=\"login-link-holder\"><a href='#' id=\"google-login\"> Login w/ Google </a></div>" + -->    			
+    				"<p>Click below to request an invite to our closed beta.<p>" +
+    				"<div class=\"horizontal-align\"><button id=\"jQuery-request-invite-button\">Request An Invite</button></div>" +
+    				"<p>Login if you're already registered.</p>" +
+    				"<div class=\"horizontal-align\"><button id=\"jQuery-login-button\">Login with Google</button></div>" +
         		"</div>" +
         	"</div>"
         );
-        		
-
-          var link = "https://accounts.google.com/o/oauth2/auth?" +
+        
+        var link = "https://accounts.google.com/o/oauth2/auth?" +
           "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
           "state=%2Fprofile&" + 
           "redirect_uri=http%3A%2F%2F" + window.location.hostname + "%2Foauth2callback.html&" + 
           "response_type=token&" +
           "client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
           $('a#google-login').attr('href', link);
+        
+        
+		$('button#jQuery-login-button').click(function() { window.location = link; });
+		$('button#jQuery-request-invite-button').click(function() { window.location = link; });
+        $('button').button();
 
-      }else{
+          
+
+      } else {
         $.getJSON('django/api/fetchbygid/' + gid, function(data) {
           if ( jQuery.isEmptyObject(data) ) {
             alert("Looks like your not in the database yet");
