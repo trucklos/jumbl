@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>jumbl</title>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <!-- not ready for this, but this will make it a real web app: meta name="apple-mobile-web-app-capable" content="yes" / -->
@@ -40,7 +39,7 @@
         <div id="map" style="width:100%;height:300px;margin:0; padding:0;"> </div>
       </article>
 
-      <div data-theme="a" data-role="footer">
+      <div data-role="footer">
         <style>
           #map-navbar .ui-btn .ui-btn-inner { padding-top: 40px !important; }
           #map-navbar .ui-btn .ui-icon { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
@@ -51,12 +50,16 @@
           #search .ui-icon { background:  url(img/icons/magnify.png) 50% 50% no-repeat;  background-size: 24px 24px; }
           #share .ui-icon { background:  url(img/icons/bookmark.png) 50% 50% no-repeat; background-size: 10px 26px;  }
         </style>
-        <div id="map-navbar" data-role="navbar"><ul>
+        <div id="map-navbar" data-role="navbar"  style="background: url(img/bg/txture.png)"><ul>
           <li><a id="new" href="javascript:void(0)" onclick="submitPathForm()" data-role="button" data-icon="custom">new</a></li>
           <li><a id="locate" href="javascript:void(0)" onclick="MapThing.locate()" data-role="button" data-icon="custom">locate</a></li>
           <li><a id="drop" href="javascript:void(0)" onclick="MapThing.dropPointCenter()" data-role="button" data-icon="custom">Jmbl</a></li>
           <li><a id="search" href="javascript:void(0)" onclick='foursquareSearch();' data-role="button" data-icon="custom">places</a></li>
           <li><a id="share" href="javascript:void(0)" onclick="MapThing.shareFromSelect()" data-role="button" data-icon="custom">share</a></li>
+        <!-- $.mobile.showPageLoadingMsg()  hidePageLoadingMsg() 
+ajax
+beforeSend: function() {}
+  -->
         </ul></div> <!-- navbar -->
       </div> <!-- footer -->
     </div> <!-- main-page -->
@@ -64,7 +67,7 @@
     <div data-role="page" id="foursquare-search"> 
       <div data-role="header">
         <h1>Search Venues</h1>
-        <a href="javascript:void(0)" data-role="button" data-rel="back">back</a>
+        <a href="javascript:void(0)" data-role="button" data-rel="back" data-icon="arrow-l">back</a>
         <form name="foursquare-search" action="javascript:void(0)" onSubmit="FourSquare.search($('#search-basic').val()); $('input#search-basic').blur();"> 
           <input type="search" name="search" id="search-basic" value="" data-mini="true" /> 
         </form>

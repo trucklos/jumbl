@@ -1,17 +1,13 @@
 // create a module and pass in jquery as $
 var MapThing = (function ($) {
 
-// Visual Globals
-var map;
-var allPathsLayer;
-var mobile;
+var map, allPathsLayer, mobile; 
+var loadingPages = 0;
 
-// 
 var currentPath = null;
 var currentPathList = [];
 var markers = [];
 
-// Current Position
 var userLat = null;
 var userLon = null;
 
@@ -19,7 +15,6 @@ var userLon = null;
 var mt = {};
 
 mt.getQueryVariable = function(variable, defaultval) { 
-  
   var query = window.location.search.substring(1); 
   var vars = query.split("&"); 
   for (var i=0; i<vars.length; i++) { 
@@ -37,27 +32,26 @@ mt.fixScroll = function(){
 };
 
 mt.resizeContentArea = function() {
-      var content, contentHeight, iosBuffer, footer, header, viewportHeight;
-      header = $(":jqmData(role='header'):visible");
-      footer = $(":jqmData(role='footer'):visible");
-      content = $(":jqmData(role='content'):visible");
-      if((navigator.userAgent.match(/iPhone/i)) || 
-        (navigator.userAgent.match(/iPod/i)) ||
-        (navigator.userAgent.match(/iPad/i))){
-        iosBuffer=66;
-      }else{
-        iosBuffer=0;
-      }
+  var content, contentHeight, iosBuffer, footer, header, viewportHeight;
+  header = $(":jqmData(role='header'):visible");
+  footer = $(":jqmData(role='footer'):visible");
+  content = $(":jqmData(role='content'):visible");
+  if((navigator.userAgent.match(/iPhone/i)) || 
+    (navigator.userAgent.match(/iPod/i)) ||
+    (navigator.userAgent.match(/iPad/i))){
+    iosBuffer=66;
+  }else{
+    iosBuffer=0;
+  }
 
-      mt.fixScroll();
+  mt.fixScroll();
 
-      viewportHeight = $(window).height();
-      contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + iosBuffer;
-      $("div#map").first().height(contentHeight);
-      return $("#map").height(contentHeight);
+  viewportHeight = $(window).height();
+  contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + iosBuffer;
+  $("div#map").first().height(contentHeight);
+  return $("#map").height(contentHeight);
 };
 
-// public function my.initMap
 mt.initMap = function(elementId, locate, mob){
   var locate = typeof(locate) === 'undefined' ? true : locate; 
   mobile = typeof(mob) === 'undefined' ? false : mob;
@@ -91,12 +85,24 @@ mt.initMap = function(elementId, locate, mob){
   }
 
   if(mobile){
-    var demo;
     $(window).bind('orientationchange pageshow resize pageinit', mt.resizeContentArea);
   }
 
 };
 
+
+mt.startLoading = function(){
+  loadingPages=loadingPages+1;
+  $.mobile.showPageLoadingMsg();
+  return loadingPages;
+};
+
+mt.stopLoading = function(){
+  loadingPages=Math.max(0,loadingPages-1);
+  if(loadingPages==0)
+    $.mobile.hidePageLoadingMsg();
+  return loadingPages;
+};
 
 mt.locate = function(zoom){
   var zoom = typeof(zoom) === 'undefined' ? true : zoom;
@@ -130,30 +136,28 @@ mt.editPointPopup = function(markerKey){
 mt.setPointPopup = function(markerKey, editable){
   var editable = typeof(editable) === 'undefined' ? false : editable; 
   var marker = markers[markerKey];
-  //if(marker.point.description != null || editable ){
-    marker._popup.setContent( (marker.point.description === null ? " " : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
-  //}else{
-    //marker._popup.off();
-  //}
+  marker._popup.setContent( (marker.point.description === null ? " " : marker.point.description) + ( editable ? "<a href='javascript:void(0)' onclick='MapThing.editPointPopup("+markerKey+")' > edit</a>" : "" ) );
 };
 
 mt.updateDescription = function(pointKey, description){
   var point = currentPath.points[pointKey];
   point.description = description;
-  $.ajax({type: 'PUT', url: 'django/api/points/'+point.id,
-                data: { 'description': description }
-        });
+  $.ajax({
+    type: 'PUT', 
+    url: 'django/api/points/'+point.id,
+    data: { 'description': description }
+  });
   mt.setPointPopup(pointKey, true);
 };
 
 mt.deletePoint = function(pointKey){
   var point = currentPath.points[pointKey];
   currentPath.points.splice(pointKey,1);
+  mt.drawPath(currentPath);
+
   $.ajax({type: 'DELETE', 
       url: 'django/api/points/'+point.id
     }).done(function(){
-      // TODO: if we wanted to make this consistent with the other calls, we could just delete the point locally and redraw locally and then send the delete request.  This would make the interface a little snappier.
-      mt.getAndDrawPath(currentPath.id, false, true);
     });
 };
 
@@ -195,12 +199,18 @@ mt.drawPath = function(path, zoom, editable) {
 };
 
 mt.getAndDrawPath = function(pathId, zoom, editable, callback){
-  var url = 'django/api/paths/'+pathId;
-  $.getJSON(url, function(path){
+  var dataUrl = 'django/api/paths/'+pathId;
+  $.ajax({
+    url:dataUrl,
+    beforeSend: function(xhr){
+      mt.startLoading();
+    }
+  }).done(function(path){
     mt.drawPath(path, zoom, editable);
-  }).done( function(path){
     if(typeof(callback) != 'undefined')
       callback(path);
+  }).complete(function(){
+    mt.stopLoading();
   });
 };
 
@@ -220,11 +230,8 @@ mt.loadUserPathList = function(pathList) {
         pathItems = [];
         pathSelectItems = [];
         $.each(pathList, function (key, val) {
-            //pathItems.push( mt.getPathText(val) );
             pathSelectItems.push( mt.getSelectItemText(val) );
         });
-        //$('ul#userlist').empty();
-        //$('ul#userlist').append( pathItems.join('\n') );
         
         $('select#pathSelectList').empty();
         $('select#pathSelectList').append(pathSelectItems.join('\n') );   
@@ -292,7 +299,15 @@ fs.request = function(lat, lon, query, callback){
   var query = typeof(query) === 'undefined' ? "" : query;
   var searchString="https://api.foursquare.com/v2/venues/search?client_id=QTVZ0RMVUR3GEO30XJTKAWT02XMEQINHOH2FAEUFM42CZWMU&client_secret=4UAF15NQOUJKN1MJYOLY4U0PNWW1MLYLLSM0VYWYTRI4XF2X&ll={lat},{lon}&query={query}";  
   searchString = searchString.replace("{lat}",String(lat)).replace("{lon}",String(lon)).replace("{query}",query);
-  $.ajax({"url":searchString}).done(function (data){ callback(data.response.groups[0].items);
+  $.ajax({
+    url:searchString,
+    beforeSend: function (xhr){
+      MapThing.startLoading();
+    }
+  }).done(function (data){ 
+    callback(data.response.groups[0].items);
+  }).complete(function(){
+    MapThing.stopLoading();
   });
 }
 
@@ -301,7 +316,6 @@ fs.search = function(query){
   fs.request(center[0], center[1], query, function(d){
     var newContent = [];
     $.each(d, function(key, val){
-      console.log(val);
       newContent.push("<li> <a href=\"javascript:void(0)\" onclick=\"MapThing.addPoint("+val.location.lat+","+val.location.lng+"); window.history.back();\">"+val.name+"<br/>"+
       "<div style='color:#BBB;font-size:small;'>"+
         (typeof(val.location.address)==='undefined'?"":val.location.address+", ")+
