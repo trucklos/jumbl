@@ -21,16 +21,7 @@
   <script src="leaflet-0.3.1/leaflet.js"></script>
   
   <script src="js/jquery-1.7.2.js"></script>
-  <!-- <script src="js/jquery-ui-1.8.21.custom.min.js"></script> -->
-  
-  <script src="js/jquery-ui-1.9/jquery.ui.core.js"></script>
-  <script src="js/jquery-ui-1.9/jquery.ui.widget.js"></script>
-  <script src="js/jquery-ui-1.9/jquery.ui.position.js"></script>
-  <script src="js/jquery-ui-1.9/jquery.ui.menu.js"></script>
-  <script src="js/jquery-ui-1.9/jquery.ui.selectmenu.js"></script>
-  <script src="js/jquery-ui-1.9/jquery.ui.button.js"></script>
-  
-  
+  <script src="js/jquery-ui-1.8.21.custom.min.js"></script>
   <script src="js/mapthing.js"></script>
 
   <script>    
@@ -82,13 +73,6 @@
         $('button').button();
 
       } else {
-      
-      	$('button#jQuery-locate-button').button({ icons: { primary: "ui-icon-home" } }).click(function() { MapThing.locate() });
-      	$('button#jQuery-drop-point-button').button({ icons: { primary: "ui-icon-pin-s" } }).click(function() { MapThing.dropPointCenter() });
-      	$('button#jQuery-new-path-button').button({ icons: { primary: "ui-icon-plusthick" } }).click(function() { submitPathForm() });
-      	$('button#jQuery-view-path-button').button({ icons: { primary: "ui-icon-image" } }).click(function() { MapThing.shareFromSelect() });
-      	$('select#jQuery-path-select-list').selectmenu();
-      	$('button').button();
       
         $.getJSON('django/api/fetchbygid/' + gid, function(data) {
           if ( jQuery.isEmptyObject(data) ) {
@@ -155,18 +139,8 @@
 	      		<a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" title="Share the current map" >View Path</a>
 	      </div>
 	      <div id="path-list-button" class="button">
-	      	<select id="pathSelectList">
-	        
-	      	</select>
+	      	<select id="pathSelectList"></select>
 	      </div>
-      </div>
-      
-      <div style="clear:both;">
-      	<button id="jQuery-locate-button">Locate</button>
-      	<button id="jQuery-drop-point-button">Drop Point</button>
-      	<button id="jQuery-new-path-button">New Path</button>
-      	<button id="jQuery-view-path-button">View Path</button>
-      	<select id="jQuery-path-select-list" name="path-list"></select>
       </div>
   </div>
   <!--
