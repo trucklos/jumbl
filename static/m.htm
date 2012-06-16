@@ -36,7 +36,7 @@
       </div> <!-- header -->
 
       <article data-role="content" style="margin: 0; padding: 0">
-        <div id="map" style="width:100%;height:300px;margin:0; padding:0;"> </div>
+        <div id="map" style="width:100%;height:305px;margin:0; padding:0;"> </div>
       </article>
 
       <div data-role="footer">
@@ -125,6 +125,7 @@ beforeSend: function() {}
       $('a#google-login').attr('href', link);
 
     }else{
+
       MapThing.initMap('map',true,true);
       $.getJSON('django/api/fetchbygid/' + gid, function(data) {
         if ( jQuery.isEmptyObject(data) ) {

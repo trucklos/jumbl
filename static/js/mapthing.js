@@ -93,13 +93,14 @@ mt.initMap = function(elementId, locate, mob){
 
 mt.startLoading = function(){
   loadingPages=loadingPages+1;
-  $.mobile.showPageLoadingMsg();
+  if(mobile)
+    $.mobile.showPageLoadingMsg();
   return loadingPages;
 };
 
 mt.stopLoading = function(){
   loadingPages=Math.max(0,loadingPages-1);
-  if(loadingPages==0)
+  if(loadingPages==0 && mobile)
     $.mobile.hidePageLoadingMsg();
   return loadingPages;
 };
