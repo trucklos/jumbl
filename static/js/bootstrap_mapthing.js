@@ -48,8 +48,8 @@ mt.resizeContentArea = function() {
 
   viewportHeight = $(window).height();
   contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight() + iosBuffer;
-  $("div#map").first().height(contentHeight);
-  return $("#map").height(contentHeight);
+  $("div#leaflet-map").first().height(contentHeight);
+  return $("#leaflet-map").height(contentHeight);
 };
 
 mt.initMap = function(elementId, locate, mob) {
