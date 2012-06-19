@@ -103,12 +103,10 @@
           if ( jQuery.isEmptyObject(data) ) {
             alert("Looks like your not in the database yet");
           } else {
-          	
             userid = data[0].id;
             var url = 'django/api/users/'+userid;            
             $.getJSON(url, function(user) {
               MapThing.loadUserPathList(user.paths);
-              alert("about to getandDrawPath");
               MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
             });
           }
@@ -120,7 +118,9 @@
           }
         });
         
+        alert("about to call init map");
         MapThing.initMap('map');
+        alert("done init map");
     }
 
     });
