@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"><!--320-->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+
+    <title>jumbl</title>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+    body {
+          padding-top: 60px;
+          padding-bottom: 40px;
+        }
+        .sidebar-nav {
+          padding: 9px 0;
+        }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet" type="text/css"><!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--
+	  <link type="text/css" rel="stylesheet" href="css/reset.css">
+	  <link type="text/css" rel="stylesheet" href="css/style.css">
+	  <link type="text/css" href="css/custom-theme/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+	  -->
+		
+		<!-- Google Web fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Fredoka+One' rel='stylesheet' type='text/css'><!-- Fav and Touch icons -->
+    <link rel="shortcut icon" href="img/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="img/ico/apple-touch-icon-57-precomposed.png">
+    
+    <!-- Leaflet css & js -->
+    <link rel="stylesheet" href="leaflet-0.3.1/leaflet.css" type="text/css">
+    
+    <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
+
+    <script src="leaflet-0.3.1/leaflet.js" type="text/javascript"></script>
+    <script src="js/jquery-1.7.2.js" type="text/javascript"></script>
+    <!-- <script src="js/jquery-ui-1.8.21.custom.min.js"></script> -->
+
+    <script src="js/bootstrap_mapthing.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+    // Set scroll to zero
+    window.addEventListener("load",function() {
+        setTimeout(function(){
+            window.scrollTo(0, 1);
+        }, 0);
+    });
+
+    currentPath = null;
+    userid = null;
+
+    function submitPathForm(){
+      var createpathdesc = prompt("Enter the title of your new path","My awesome adventure");
+      if (createpathdesc !== null) {
+        MapThing.createPath(createpathdesc, userid);
+      } 
+    }
+
+    $(document).ready(function() {
+      var gid = MapThing.getQueryVariable("gid",-1);
+      if(gid==-1){
+        $("#body-content").replaceWith(
+            "<div id=\"body-content\">" +
+                "<div class=\"center-box ui-widget ui-widget-content ui-corner-all\">" +
+                    "<h1>Welcome to jumbl!<\/h1>" +
+                    <!-- "<div class=\"login-link-holder\"><a href='#' id=\"google-login\"> Login w/ Google <\/a><\/div>" + -->               
+                    "<p>Click below to request an invite to our closed beta.<p>" +
+                    "<a class=\"btn btn-large btn-primary\" href=\"\">Request An Invite<\/a>" +
+                    "<p>Login if you're already registered.<\/p>" +
+                    "<a class=\"btn btn-large\" href=\"\">Login with Google<\/a>" +
+                "<\/div>" +
+            "<\/div>"
+        );
+        
+        var link = "https://accounts.google.com/o/oauth2/auth?" +
+          "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
+          "state=%2Fprofile&" + 
+          "redirect_uri=http%3A%2F%2F" + window.location.hostname + "%2Foauth2callback.html&" + 
+          "response_type=token&" +
+          "client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
+          $('a#google-login').attr('href', link);
+        
+        
+        $('button#jQuery-login-button').click(function() { window.location = link; });
+        $('button#jQuery-request-invite-button').click(function() { window.location = link; });
+        $('button').button();
+
+      } else {
+      
+        $.getJSON('http://mapthing.carlos.ag/django/api/fetchbygid/' + gid, function(data) {
+          if ( jQuery.isEmptyObject(data) ) {
+            alert("Looks like your not in the database yet");
+          } else {
+          	
+            userid = data[0].id;
+            var url = 'django/api/users/'+userid;            
+            $.getJSON(url, function(user) {
+              MapThing.loadUserPathList(user.paths);
+              alert("about to getandDrawPath");
+              MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
+            });
+          }
+        });
+        $('select#pathSelectList').parent('div').css('padding','0');
+        $('select#pathSelectList').change(function() {
+          if ($('select#pathSelectList').val() !== null) {
+            MapThing.getAndDrawPath($('select#pathSelectList').val(), true, true);
+          }
+        });
+        
+        MapThing.initMap('map');
+    }
+
+    });
+    </script>
+    <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31831588-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    </script>
+</head>
+
+<body>
+    
+		<div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a> <a class="brand" href="#">jumbl</a>
+                <!--
+								<div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="#">Home</a></li>
+
+                        <li><a href="#about">About</a></li>
+
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+
+	    <div id="body-content">
+	        <div id="crosshairs"><img src='img/crosshairs.gif'></div>
+	
+	        <div id="map"></div>
+	
+	        <div>
+	            <div>
+	            		<input id="locate-button" class="btn btn-large" type="button" title="Locate your position on the map" value="Locate">
+	            		<input id="drop-point-button" class="btn btn-large" type="button" title="Drop a new point on the map" value="Drop Point">
+	            		<input id="create-path-button" class="btn btn-large" type="button" title="Create a new path" value="New Path">
+	            		<input id="share-button" class="btn btn-large" type="button" title="View the details of current path" value="View Path">
+	            		
+	            		<div class="btn-group">
+									  <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+									    Action
+									    <span class="caret"></span>
+									  </a>
+									  <ul class="dropdown-menu">
+									    <li><a href="#">Item 1</a></li>
+									    <li><a href="#">Item 2</a></li>
+									    <li><a href="#">Item 3</a></li>
+										</ul>
+									</div>
+	            
+	                <div id="locate-button" class="button">
+	                    <a href="javascript:void(0)" onclick="MapThing.locate()" title="Locate your position on the map">Locate</a>
+	                </div>
+	
+	                <div id="drop-point-button" class="button">
+	                    <a href="javascript:void(0)" onclick="MapThing.dropPointCenter()" title="Drop a new point on the map">Drop Point</a>
+	                </div>
+	
+	                <div id="create-path-button" class="button">
+	                    <a href="javascript:void(0)" onclick="submitPathForm()" title="Create a new path">New Path</a>
+	                </div>
+	
+	                <div id="share-button" class="button">
+	                    <a href="javascript:void(0)" onclick="MapThing.shareFromSelect()" title="Share the current map">View Path</a>
+	                </div>
+	
+	                <div id="path-list-button" class="button">
+	                    <select id="pathSelectList">
+	                        </select>
+	                </div>
+	            </div>
+	        </div>
+	    </div> <!-- /body-content -->
+
+    <footer id="body-footer"></footer>
+    
+    </div> <!-- /container -->
+    
+    <!-- javascript ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- <script src="../assets/js/jquery.js"></script> -->
+    <script src="js/bootstrap/bootstrap-transition.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-alert.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-tab.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-popover.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-button.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-collapse.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-carousel.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-typeahead.js" type="text/javascript"></script>
+    
+</body>
+</html>
