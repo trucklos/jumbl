@@ -237,11 +237,11 @@ mt.loadUserPathList = function(pathList) {
             pathSelectItems.push( mt.getSelectItemText(val) );
         });
         
-        $('select#pathSelectList').empty();
-        $('select#pathSelectList').append(pathSelectItems.join('\n') );   
+        $('div#path-list ul').empty();
+        $('div#path-list ul').append(pathSelectItems.join('\n') );   
 
         if(mobile){
-          $('select#pathSelectList').trigger("change");
+          $('div#path-list ul').trigger("change");
         }
 };
 
@@ -255,7 +255,9 @@ mt.getPathText = function(path){
 mt.getSelectItemText = function(path){
   var description = path.description;
   var pathid = path.id;
-  return '<option value="' + pathid + '" >' + description + '</option>';
+  
+	return '<li><a href="#">' + description + '</a></li>';
+  //return '<option value="' + pathid + '" >' + description + '</option>';
 };
 
 
