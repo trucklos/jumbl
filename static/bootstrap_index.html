@@ -99,7 +99,7 @@
 
       } else {
       
-        $.getJSON('http://mapthing.carlos.ag/django/api/fetchbygid/' + gid, function(data) {
+        $.getJSON('django/api/fetchbygid/' + gid, function(data) {
           if ( jQuery.isEmptyObject(data) ) {
             alert("Looks like your not in the database yet");
           } else {
