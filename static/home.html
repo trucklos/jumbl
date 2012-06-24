@@ -36,6 +36,12 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/icons/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="img/icons/apple-touch-icon-57-precomposed.png">
     
+    <!-- Leaflet css -->
+    <link rel="stylesheet" href="leaflet-0.3.1/leaflet.css" type="text/css">
+    
+    <!--[if lte IE 8]>  <link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /><![endif]-->
+
+    <script src="leaflet-0.3.1/leaflet.js" type="text/javascript"></script>
     <script src="js/jquery-1.7.2.js" type="text/javascript"></script>
     
     <script type="text/javascript">
@@ -49,7 +55,7 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-    
+
     </script>
 </head>
 
@@ -66,59 +72,80 @@
     <div class="container">
 
 	    <div id="body-content">
-      	
-      	<div class="row">
-      	
-      		<div id="splash-well" class="span12 well">
-      	
-		      	<div class="row">
-		          <div class="span8">
-		              <h1 id="welcome-text">Welcome to jumbl</h1>
-		              <p>Click below to request an invite to our closed beta.<p>
-		              <a id="register-button" class="btn btn-large btn-primary" href="">Request An Invite</a>
-		              <br/><br/>
-		              <p>Login if you're already registered.</p>
-		              <a id="login-button" class="btn btn-large" href="">Login with Google</a>
-		          </div>
-		      	</div>
-		      	 
-      		</div> <!-- /well -->
 
-      	</div> <!-- /row -->
-      	
+	  		<div id="crosshairs"><img src='img/crosshairs.gif'></div>
+				<div id="map"></div>
+	  
+	  		<div class="btn-toolbar">
+	    		
+	    		<div class="btn-group">
+	      		<input id="locate-button" class="btn btn-large" type="button" title="Locate your position on the map" value="Locate">
+	      	</div>
+	      	<div class="btn-group">
+	      		<input id="drop-point-button" class="btn btn-large" type="button" title="Drop a new point on the map" value="Drop Point">
+	      	</div>
+	      	<div class="btn-group">	
+	      		<input id="create-path-button" class="btn btn-large" type="button" title="Create a new path" value="New Path">
+	      	</div>
+	      	<div class="btn-group">	
+	      		<input id="share-button" class="btn btn-large" type="button" title="View the details of current path" value="View Path">
+	    		</div>
+	    		<div id="path-list" class="btn-group dropup">
+					  <a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#">
+					    <span id="path-list-label">Action<span>
+					    <span class="caret"></span>
+					  </a>
+					  <ul class="dropdown-menu"></ul>
+					</div>
+					
+	  		</div>      
+	        
 	    </div> <!-- /body-content -->
 
+    
+    
     </div> <!-- /container -->
     
     <!-- javascript ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- <script src="../assets/js/jquery.js"></script> -->    
     <script src="js/bootstrap/bootstrap-transition.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-alert.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-tab.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-popover.js" type="text/javascript"></script>
     <script src="js/bootstrap/bootstrap-button.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-collapse.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-carousel.js" type="text/javascript"></script>
+    <script src="js/bootstrap/bootstrap-typeahead.js" type="text/javascript"></script>
     <script src="js/bootstrap_mapthing.js" type="text/javascript"></script>
     
    	<script type="text/javascript">
-	    
-	    // Set scroll to zero
-	    window.addEventListener("load",function() {
-	        setTimeout(function(){
-	            window.scrollTo(0, 1);
-	        }, 0);
-	    });
-	
-	    $(document).ready(function() {
-	    	
-	    	var link = "https://accounts.google.com/o/oauth2/auth?" +
-	      "scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&" +
-	      "state=%2Fprofile&" + 
-	      "redirect_uri=http%3A%2F%2F" + window.location.hostname + "%2Foauth2callback.html&" + 
-	      "response_type=token&" +
-	      "client_id=57106561862-02bemf71os91h573kq2tqioeb9gf7adk.apps.googleusercontent.com";
-	      
-	    	$('a#login-button, a#register-button').attr('href', link);
-	    	
-	    });
-	    
+
+
+    // Set scroll to zero
+    window.addEventListener("load",function() {
+        setTimeout(function(){
+            window.scrollTo(0, 1);
+        }, 0);
+    });
+
+    currentPath = null;
+    userid = null;
+
+    function submitPathForm(){
+      var createpathdesc = prompt("Enter the title of your new path","My awesome adventure");
+      if (createpathdesc !== null && $.trim(createpathdesc) !== "") {
+        MapThing.createPath(createpathdesc, userid);
+      } 
+    }
+
+    $(document).ready(function() {
+    	MapThing.initMapPage();
+    });
     </script>
   
 </body>

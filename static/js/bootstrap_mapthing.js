@@ -350,7 +350,7 @@ mt.addPoint = function(lat, lng){
 mt.shareFromSelect = function() {
 	
 	var pathid = $('div#path-list a.dropdown-toggle span#path-list-label').attr('name');
-	window.location = 'bootstrap_share.html?pathid=' + pathid;
+	window.location = 'share.html?pathid=' + pathid;
 };
 
 return mt;
