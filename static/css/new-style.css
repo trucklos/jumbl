@@ -1,0 +1,69 @@
+/*@import url('');*/
+
+* {
+	margin: 0;
+}
+
+body {
+	font-size: 16px;
+}
+
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+.pointer-cursor {
+	cursor: pointer;
+}
+
+div#splash-well {
+	background: url(../img/splash.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	
+	height: 500px;
+}
+
+/********************** Header *********************/
+
+h1#path-name {
+	margin-bottom: .25em;
+}
+
+div.navbar a.brand {
+	color: #2B4DFD;
+	font-family: 'Fredoka One', cursive;
+}
+
+h1#welcome-text {
+	padding: 25px 0;
+	font-size: 3em;
+	line-height: 1em;
+	
+}
+
+/************************ Map **********************/
+
+#map {
+	width: 100%;
+	height: 400px;
+	margin-bottom: 1em;
+	border: 1px solid #999;
+}
+
+/********************* Crosshairs *******************/
+#crosshairs {
+  position:relative; 
+  top:189px; 
+  width:0px; height:0px; 
+  margin-left: -13px; 
+  /* background-image:url('../img/crosshairs.gif'); 
+  background-repeat:no-repeat center center; */
+  left:50%; 
+  z-index:100;
+}
+
+
+}
