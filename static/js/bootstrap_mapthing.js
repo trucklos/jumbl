@@ -11,8 +11,8 @@ var initialZoom;
 
 var userLat = null;
 var userLon = null;
-var urlPrefix = "http://mapthing.carlos.ag/";
-//var urlPrefix = "";
+//var urlPrefix = "http://mapthing.carlos.ag/";
+var urlPrefix = "";
 
 // module variable
 var mt = {};
