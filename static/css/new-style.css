@@ -66,4 +66,26 @@ h1#welcome-text {
 }
 
 
+/*********************** Icons **********************/
+
+.splash-icons {
+	background-size: 100%;
+}
+
+#map-icon {
+	background: url(../img/icons/103-map@2x.png);
+	width: 52px;
+	height: 42px;
+}
+
+#iphone-icon {
+	background: url(../img/icons/32-iphone@2x.png);
+	width: 32px;
+	height: 56px;
+}
+
+#broadcast-icon {
+	background: url(../img/icons/275-broadcast@2x.png);
+	width: 52px;
+	height: 42px;
 }
