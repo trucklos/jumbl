@@ -16,14 +16,14 @@ body {
 	cursor: pointer;
 }
 
-div#splash-well {
+div#splash {
 	background: url(../img/splash.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 	
-	height: 500px;
+
 }
 
 /********************** Header *********************/
