@@ -9,6 +9,15 @@
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"><!--320-->
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    
+    <!-- facebook open graph meta tags -->
+    <meta property="og:title" content="Jumbl" />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="" />
+		<meta property="og:image" content="http://jumbl.us/img/icons/apple-touch-icon-144-precomposed.png" />
+		<meta property="og:site_name" content="Jumbl" />
+		<meta property="fb:admins" content="410804" />
+		<!-- end of facebook tags -->
 
 		<style type="text/css">
       body {
@@ -58,6 +67,15 @@
 </head>
 <body>
 
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=282114005215312";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+
 		<div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
@@ -69,10 +87,11 @@
 <div class="container">
 
 	<div id="body-content">
-	
+		
 		<h1 id="path-name"></h1>
 		<div id="map" style="height: 400px; width: 100%;"></div>
-	
+		<div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+		
 		<div class="info-box">
 			<div id="path">
 			</div>
